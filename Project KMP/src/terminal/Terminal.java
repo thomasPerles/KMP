@@ -8,10 +8,12 @@ public class Terminal {
 	
 	InputStream in;
 	PrintStream out;
+	Scanner scanner;
 	
 	public Terminal(InputStream in, PrintStream out) {
 		this.in = in;
 		this.out = out;
+		scanner = new Scanner(in);
 	}
 	
 	public void prompt() {
@@ -19,10 +21,15 @@ public class Terminal {
 	}
 	
 	public String consume() {
-		Scanner scanner = new Scanner(in);
 		String typed = scanner.nextLine();
-		scanner.close();
 		return typed;
 	}
 	
+	public void interpret(String line) {
+		
+	}
+
+	private void displayOptions(String line) {
+		
+	}
 }
