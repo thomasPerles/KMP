@@ -46,17 +46,12 @@ public class DB {
 		return r;
 	}
 	
-	
-	
-	
 	// TODO
 	public Result answer(DB query) {
 		// TODO
-		//Result r = new Result(), 
-		Result r0 = new Result(), r1;
-		this.dbMatch2(query.getTs().get(0), new Context());
+		Result r0 = this.dbMatch2(query.getTs().get(0), new Context());
 		for (int j = 1; j < query.getTs().size(); j++) {
-			r1 = new Result();
+			Result r1 = new Result();
 			for (int i = 0; i < r0.getCs().size(); i++) {
 				r1.mergeResult(this.dbMatch2(query.getTs().get(j), r0.getCs().get(i)));
 			}

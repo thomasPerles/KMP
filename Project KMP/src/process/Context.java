@@ -31,7 +31,7 @@ public class Context {
 	
 	public String getVariable(String var) {
 		for (int i = 0; i < this.vars.size(); i++) {
-			if (this.vars.get(i) == var) return this.vals.get(i);
+			if (this.vars.get(i).equals(var)) return this.vals.get(i);
 		}
 		return null;
 	}
@@ -44,16 +44,19 @@ public class Context {
 	}
 	
 	public boolean valueMatch(String pat, String exp) {
-		if (pat == "?") {
-			if (hasVariable(pat)) return getVariable(pat) == exp;
+		if (pat.toCharArray()[0] == '?') {
+			if (hasVariable(pat)) return getVariable(pat).equals(exp);
 			else {
 				addContext(pat, exp);
 				return true;
 			}
-		} else return pat == exp;
+		} else return pat.equals(exp);
 	}
 	
 	public boolean tripleMatch(Triple pat, Triple exp) {
-		return valueMatch(pat.getS(), exp.getS()) && valueMatch(pat.getL(), exp.getL()) && valueMatch(pat.getD(), exp.getD());
+		if(valueMatch(pat.getS(), exp.getS()))
+			if(valueMatch(pat.getL(), exp.getL()))
+				return valueMatch(pat.getD(), exp.getD());
+		return false;
 	}
 }
