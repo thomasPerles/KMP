@@ -1,0 +1,40 @@
+Starter		:= Declaration
+			| Display
+
+Declaration := Class
+			|  Instance
+			| Relation
+			
+Class		:= class ?X
+
+Instance 	:= instance ?X of ?Y:class
+			| instance ?X
+			
+Relation 	:= relation ?X between ?Y:class and ?Z:class
+			| relation ?X between ?Y:instance and ?Z:instance
+			| relation ?X
+
+Display 	:= Show
+			| Triple 
+			
+Show		:= show ?X:class|instance|relation
+
+Triple		:= ?[ ?X(:class|instance) ?Y(:relation) ?Z(:class|instance) ]
+
+
+Example:
+
+class Country
+instance France of Country
+
+class Flag
+
+relation Country hasFlag Flag (rule)
+
+France hasFlag FrenchFlag (fact)
+
+
+show FrenchFlag
+"FrenchFlag is Flag" (inference)
+"France hasFlag FrenchFlag"
+
