@@ -70,8 +70,8 @@ public final class Main {
 	}
 	
 	public static void mainTerminal() {
-		Terminal terminal = new Terminal(System.in, System.out);
-		new Thread(terminal).start();
+		// Terminal terminal = new Terminal(System.in, System.out);
+		// new Thread(terminal).start();
 	}
 	
 	public static void main(String[] args) {
