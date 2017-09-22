@@ -1,0 +1,11 @@
+Declaration := class ?X
+			|  instance ?X of ?Y:class
+			| Relation
+
+Relation 	:= relation ?X between ?Y:class and ?Z:class
+			| relation ?X between ?Y:instance and ?Z:instance
+			| relation ?X
+
+Affichage 	:= show ?X:class|instance|relation
+			| ?[?X(:class|instance) ?Y(:relation) ?Z(:class|instance)]
+			
