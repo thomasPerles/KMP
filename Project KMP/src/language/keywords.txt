@@ -6,12 +6,12 @@ Declaration := Class
 			| Relation
 			
 Class		:= class ?X
+			| class ?X has ?Y
 
-Instance 	:= instance ?X of ?Y:class
+Instance 	:= instance ?X is ?Y:class
 			| instance ?X
 			
-Relation 	:= relation ?X between ?Y:class and ?Z:class
-			| relation ?X between ?Y:instance and ?Z:instance
+Relation	:= relation ?X between ?Y:class|instance and ?Z:class|instance
 			| relation ?X
 
 Display 	:= Show

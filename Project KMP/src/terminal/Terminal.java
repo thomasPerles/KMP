@@ -2,19 +2,26 @@ package terminal;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
+
+import language.SyntaxVerifier;
 
 public class Terminal implements Runnable {
 	
 	private InputStream in;
 	private PrintStream out;
 	private Scanner scanner;
+	private SyntaxVerifier sv;
 	private boolean hasQuit;
 	
-	public Terminal(InputStream in, PrintStream out) {
+	public Terminal(InputStream in, PrintStream out, SyntaxVerifier sv) {
 		this.in = in;
 		this.out = out;
 		scanner = new Scanner(in);
+		this.sv = sv;
+		sv.setTerminal(this);
 		hasQuit = false;
 	}
 	
@@ -22,17 +29,17 @@ public class Terminal implements Runnable {
 		out.print(System.lineSeparator() + "> ");
 	}
 	
-	public String consume() {
-		String consumed = scanner.nextLine();
+	public String[] consume() {
+		String[] consumed = scanner.nextLine().split(" ");
 		return consumed;
 	}
 	
-	public void interpret(String line) {
-		
+	public void println(String token) {
+		out.println(token);
 	}
-
-	private void displayOptions(String line) {
-		
+	
+	public void print(String token) {
+		out.print(token);
 	}
 	
 	private void quit() {
@@ -41,9 +48,18 @@ public class Terminal implements Runnable {
 
 	@Override
 	public void run() {
+		
 		while(!hasQuit) {
 			prompt();
-			System.out.println("Command consumed: " + consume());
+			String tokens[] = consume();
+			switch(tokens[tokens.length - 1]) {
+			case "help":
+				int length = tokens.length - 1;
+				sv.suggest(Arrays.copyOf(tokens, length));
+				break;
+			default:
+				sv.verify(tokens);
+			}
 		}
 	}
 }
