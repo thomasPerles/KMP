@@ -1,9 +1,14 @@
 package process;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Context {
+public class Context implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<String> vars, vals;
 	
 	public Context() {

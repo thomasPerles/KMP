@@ -1,7 +1,13 @@
 package process;
 
-public class Triple {
+import java.io.Serializable;
+
+public class Triple implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String s, l, d;
 	
 	public Triple(String a, String b, String c) {

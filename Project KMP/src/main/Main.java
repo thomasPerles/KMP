@@ -1,5 +1,8 @@
 package main;
 
+import process.DB;
+import process.Triple;
+import java.io.*;
 import terminal.Terminal;
 
 public final class Main {
