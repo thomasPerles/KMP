@@ -64,4 +64,24 @@ public class Context implements Serializable {
 				return valueMatch(pat.getD(), exp.getD());
 		return false;
 	}
+	
+	
+	
+	//v2
+	public Triple evaluateTriple(Triple t) {
+		String s = null, l = null, d = null;
+		if (t.getS().toCharArray()[0] == '?') 
+			s = this.getVariable(t.getS());
+		else
+			s = t.getS();
+		if (t.getL().toCharArray()[0] == '?') 
+			l = this.getVariable(t.getL());
+		else
+			l = t.getL();
+		if (t.getD().toCharArray()[0] == '?') 
+			d = this.getVariable(t.getD());
+		else
+			d = t.getD();
+		return new Triple(s, l, d);
+	}
 }

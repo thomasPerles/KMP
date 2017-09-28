@@ -36,4 +36,14 @@ public class Result implements Serializable {
 		this.cs.addAll(c.getCs());
 	}
 	
+	
+	
+	//v2
+	public DB evaluate(DB pattern) {
+		DB r = new DB();
+		for (int i = 0; i < this.cs.size(); i++) {
+			r.mergeDB(pattern.evaluateDB(this.cs.get(i)));
+		}
+		return r;
+	}
 }
