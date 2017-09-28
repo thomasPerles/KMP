@@ -69,7 +69,11 @@ public class AllDataToLocalFile implements Serializable {
 		return System.getProperty("user.dir") + "/dataSerialized/" + fileName;
 	}
 	
+<<<<<<< Updated upstream
 	public void writeObject(String fileName) throws IOException {
+=======
+	public void writeInLocalFile(String fileName) throws IOException {
+>>>>>>> Stashed changes
 		FileOutputStream fileOut = new FileOutputStream(createPath(fileName));
 		ObjectOutputStream out = new ObjectOutputStream(fileOut);
 		out.writeObject(this);
@@ -78,6 +82,7 @@ public class AllDataToLocalFile implements Serializable {
 		System.out.printf("data serialized in /dataSerialized/" + fileName);
 	}
 	
+<<<<<<< Updated upstream
 	public AllDataToLocalFile readObject(AllDataToLocalFile data, String fileName) throws IOException, ClassNotFoundException {
 		FileInputStream fileIn;
 		try {
@@ -91,6 +96,17 @@ public class AllDataToLocalFile implements Serializable {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+=======
+	public AllDataToLocalFile readInLocalFile(AllDataToLocalFile data, String fileName) throws IOException, ClassNotFoundException {
+		FileInputStream fileIn = new FileInputStream(createPath(fileName));
+		ObjectInputStream in = new ObjectInputStream(fileIn);
+		System.out.println(in.readObject());
+		data = (AllDataToLocalFile) in.readObject();
+		//faire un parser
+		in.close();
+		fileIn.close();
+		System.out.println("\ndata read from " + createPath(fileName));
+>>>>>>> Stashed changes
 		return data;
 	}
 
