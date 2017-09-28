@@ -51,9 +51,8 @@ public class DB implements Serializable {
 		return r;
 	}
 	
-	// TODO
+	//revoir le code C
 	public Result answer(DB query) {
-		// TODO
 		Result r0 = this.dbMatch2(query.getTs().get(0), new Context());
 		for (int j = 1; j < query.getTs().size(); j++) {
 			Result r1 = new Result();
@@ -64,4 +63,42 @@ public class DB implements Serializable {
 		}
 		return r0;
 	}
+	
+	
+	
+	//v2
+	public DB evaluateDB(Context c) {
+		DB r = new DB();
+		for (int i = 0; i < this.ts.size(); i++) {
+			r.addDB(c.evaluateTriple(this.getTs().get(i)));
+		}
+		return r;
+	}
+	
+	public void mergeDB(DB db) {
+		for(int i = 0; i < db.getTs().size(); i++) {
+			this.addDB(db.getTs().get(i));
+		}
+	}
+	
+	public boolean contains(Triple t) {
+		for (int i = 0; i < this.ts.size(); i++) {
+			if (this.ts.get(i).equal(t))
+				return true;
+		}
+		return false;
+	}
+	
+	public boolean unionDB(DB db) {
+		boolean changed = false;
+		for (int i = 0; i < db.getTs().size(); i++) {
+			if (!this.contains(db.getTs().get(i))) {
+				this.addDB(db.getTs().get(i));
+				changed = true;
+			}
+		}
+		return changed;
+	}
+	
+	
 }

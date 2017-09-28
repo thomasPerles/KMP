@@ -1,7 +1,6 @@
 package main;
 
-import process.DB;
-import process.Triple;
+import process.*;
 import java.io.*;
 import terminal.Terminal;
 
@@ -74,7 +73,42 @@ public final class Main {
 		// new Thread(terminal).start();
 	}
 	
+	private static void mainProcessV2() {
+		DB db = new DB();
+		db.addDB(new Triple("laurent", "isa", "man"));
+		db.addDB(new Triple("laurent", "married", "sophie"));
+		db.addDB(new Triple("married", "is", "symetric"));
+		System.out.println("-- Facts --\n" + db.toString() + "\n");
+		
+		DB pat = new DB();
+		pat.addDB(new Triple("?X", "isa", "man"));
+		pat.addDB(new Triple("?X", "married", "sophie"));
+		System.out.println("Query : " + pat.toString() + "\n");
+		
+		Result res = db.answer(pat);
+		System.out.println("Results : " + res.toString() + "\n");
+		
+		DB preRule1 = new DB(), postRule1 = new DB();
+		preRule1.addDB(new Triple("?Y", "isa", "?X"));
+		postRule1.addDB(new Triple("?X", "is", "type"));
+		Rule rule1 = new Rule(preRule1, postRule1);
+		
+		DB preRule2 = new DB(), postRule2 = new DB();
+		preRule2.addDB(new Triple("?X", "is", "symetric"));
+		preRule2.addDB(new Triple("?Y", "?X", "?Z"));
+		postRule2.addDB(new Triple("?Z", "?X", "?Y"));
+		Rule rule2 = new Rule(preRule2, postRule2);
+		
+		Rules rs = new Rules();
+		rs.addRule(rule1);
+		rs.addRule(rule2);
+		rs.inference(db);
+		System.out.println("\n-- Inference --\nRules : \n" + rs.toString() + "New Facts :\n" + db.toString() + "\n");
+	}
+	
 	public static void main(String[] args) {
-		mainDeclarationTripleDbAlldatatolocalfile();
+		//mainDeclarationTripleDbAlldatatolocalfile();
+		//mainTerminal();
+		mainProcessV2();
 	}
 }

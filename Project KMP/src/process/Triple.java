@@ -32,4 +32,10 @@ public class Triple implements Serializable {
 	public String getD() {
 		return d;
 	}
+	
+	
+	//v2
+	public boolean equal(Triple t) {
+		return this.s == t.getS() && this.l == t.getL() && this.d == t.getD();
+	}
 }
