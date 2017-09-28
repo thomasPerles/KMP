@@ -3,10 +3,7 @@ package main;
 import process.DB;
 import process.Triple;
 import java.io.*;
-<<<<<<< Updated upstream
 import terminal.Terminal;
-=======
->>>>>>> Stashed changes
 
 public final class Main {
 
