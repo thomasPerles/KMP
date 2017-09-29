@@ -1,8 +1,6 @@
-package kPackage;
+package model;
 
 import java.util.ArrayList;
-
-import kPackageUtils.KMap;
 
 public class KClass extends KObject {
 

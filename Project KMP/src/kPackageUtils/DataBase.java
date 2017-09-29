@@ -2,7 +2,7 @@ package kPackageUtils;
 
 import java.util.ArrayList;
 
-import kPackage.KObject;
+import model.KObject;
 
 public class DataBase {
 	

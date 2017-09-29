@@ -1,6 +1,4 @@
-package kPackage;
-
-import kPackageUtils.KMap;
+package model;
 
 public class KInstance extends KObject {
 

@@ -1,8 +1,8 @@
-package kPackageUtils;
+package model;
 
 import java.util.Map;
 
-import kPackage.*;
+import model.*;
 
 public class KMap<T extends KObject, U extends KObject> {
 

@@ -1,4 +1,4 @@
-package kPackage;
+package model;
 
 import kPackageUtils.*;
 
