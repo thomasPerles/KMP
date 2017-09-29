@@ -4,12 +4,27 @@ import java.util.ArrayList;
 
 public class KRelation extends KObject {
 
+	private KRelation equivalentTo;
+	private KRelation inheritsFrom;
+	private KRelation inverseOf;
 	private ArrayList<Qualifier> qualifiers = new ArrayList<Qualifier>();
 	private KMap<KClass, KClass> relationBetweenClasses = new KMap<KClass, KClass>();
 	private KMap<KInstance, KInstance> relationBetweenInstances = new KMap<KInstance, KInstance>();
 	
 	public KRelation(String id) {
 		super(id);
+	}
+	
+	public KRelation getEquivalentTo() {
+		return equivalentTo;
+	}
+
+	public KRelation getInheritsFrom() {
+		return inheritsFrom;
+	}
+
+	public KRelation getInverseOf() {
+		return inverseOf;
 	}
 
 	public ArrayList<Qualifier> getQualifiers() {

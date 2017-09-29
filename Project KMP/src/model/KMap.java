@@ -2,8 +2,6 @@ package model;
 
 import java.util.Map;
 
-import model.*;
-
 public class KMap<T extends KObject, U extends KObject> {
 
 	private Map<T, U> map;
