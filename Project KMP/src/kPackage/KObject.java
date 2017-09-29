@@ -1,6 +1,6 @@
 package kPackage;
 
-import kPackageUtils.DataBase;
+import kPackageUtils.*;
 
 public class KObject {
 

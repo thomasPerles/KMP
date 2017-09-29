@@ -2,10 +2,13 @@ package kPackage;
 
 import java.util.ArrayList;
 
+import kPackageUtils.KMap;
+
 public class KClass extends KObject {
 
 	private KClass inheritsFrom;
 	private ArrayList<KInstance> kInstances = new ArrayList<KInstance>();
+	private KMap<KRelation, KClass> relationshipsWithClasses = new KMap<KRelation, KClass>();
 	
 	public KClass(String id) {
 		super(id);
@@ -17,5 +20,9 @@ public class KClass extends KObject {
 
 	public ArrayList<KInstance> getkInstances() {
 		return kInstances;
+	}
+
+	public KMap<KRelation, KClass> getRelationshipsWithClasses() {
+		return relationshipsWithClasses;
 	}
 }
