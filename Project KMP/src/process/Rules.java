@@ -1,9 +1,14 @@
 package process;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Rules {
+public class Rules implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Rule> rs = new ArrayList<Rule>();
 	
 	public Rules() {}

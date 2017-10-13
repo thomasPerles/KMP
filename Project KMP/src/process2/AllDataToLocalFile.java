@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import process.Context;
 import process.DB;
 import process.Result;
+import process.Rule;
+import process.Rules;
 import process.Triple;
 
 public class AllDataToLocalFile implements Serializable {
@@ -23,6 +25,8 @@ public class AllDataToLocalFile implements Serializable {
 	private ArrayList<DB> dbs = new ArrayList<DB>();
 	private ArrayList<Result> results = new ArrayList<Result>();
 	private ArrayList<Triple> triples = new ArrayList<Triple>();
+	private ArrayList<Rule> rules = new ArrayList<Rule>(); //a supprimer ?
+	private ArrayList<Rules> listRules = new ArrayList<Rules>();
 	
 	public AllDataToLocalFile() {}
 	
@@ -48,6 +52,15 @@ public class AllDataToLocalFile implements Serializable {
 	public void addTriple(Triple t) {
 		this.triples.add(t);
 	}
+	
+	//TODO a supprimer ?
+	public void addRule(Rule r) {
+		this.rules.add(r);
+	}
+	
+	public void addRules(Rules r) {
+		this.listRules.add(r);
+	}
 
 	public ArrayList<Context> getContexts() {
 		return contexts;
@@ -65,6 +78,14 @@ public class AllDataToLocalFile implements Serializable {
 		return triples;
 	}
 	
+	public ArrayList<Rule> getRules() {
+		return rules;
+	}
+
+	public ArrayList<Rules> getListRules() {
+		return listRules;
+	}
+
 	public String createPath(String fileName) {
 		return System.getProperty("user.dir") + "/dataSerialized/" + fileName;
 	}
@@ -98,6 +119,6 @@ public class AllDataToLocalFile implements Serializable {
 	@Override
 	public String toString() {
 		return "AllDataToLocalFile [contexts=" + contexts + ", dbs=" + dbs + ", results=" + results + ", triples="
-				+ triples + "]";
+				+ triples + ", rules=" + rules + ", listRules=" + listRules + "]";
 	}
 }

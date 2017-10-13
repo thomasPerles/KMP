@@ -1,7 +1,13 @@
 package process;
 
-public class Rule {
+import java.io.Serializable;
 
+public class Rule implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private DB pre, post;
 	
 	public Rule(DB pre, DB post) {
