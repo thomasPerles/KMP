@@ -2,15 +2,19 @@ package process;
 
 import java.io.Serializable;
 
+import kPackage.KModel;
+import kPackage.KRelation;
+
 public class Triple implements Serializable {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String s, l, d;
+	private KRelation l;
+	private KModel s, d;
 	
-	public Triple(String a, String b, String c) {
+	public Triple(KModel a, KRelation b, KModel c) {
 		this.s = a;
 		this.l = b;
 		this.d = c;
@@ -21,15 +25,15 @@ public class Triple implements Serializable {
 		return "(" + s + " " + l + " " + d + ")";
 	}
 
-	public String getS() {
+	public KModel getS() {
 		return s;
 	}
 
-	public String getL() {
+	public KRelation getL() {
 		return l;
 	}
 
-	public String getD() {
+	public KModel getD() {
 		return d;
 	}
 	

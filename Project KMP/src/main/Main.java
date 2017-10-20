@@ -1,25 +1,40 @@
 package main;
 
-import process.*;
-import process2.AllDataToLocalFile;
-
-import java.io.*;
-import terminal.Terminal;
+import kPackage.KClass;
+import kPackage.KInstance;
+import kPackage.KRelation;
+import process.DB;
+import process.Result;
+import process.Rule;
+import process.Rules;
+import process.Triple;
 
 public final class Main {
 
 	public static void mainDeclarationTripleDbAlldatatolocalfile() {
-		Triple t1 = new Triple("John","worksFor","ENSISA");
-		Triple t2 = new Triple("ENSISA","isAt","Mulhouse");
-		Triple t3 = new Triple("ENSISA","isAt","?X"); 
+		KInstance john = new KInstance("John");
+		KInstance ensisa = new KInstance("ENSISA");
+		KInstance mulhouse = new KInstance("Mulhouse");
+		KInstance _x = new KInstance("?X");
+		KInstance amy = new KInstance("Amy");
+		KInstance softEng = new KInstance("SoftEng");
+		KInstance _y = new KInstance("?Y");
+		KInstance _z = new KInstance("?Z");
+		KRelation worksFor = new KRelation("worksFor");
+		KRelation isAt = new KRelation("isAt");
+		KRelation isa = new KRelation("isA");
+		
+		Triple t1 = new Triple(john, worksFor, ensisa);
+		Triple t2 = new Triple(ensisa, isAt, mulhouse);
+		Triple t3 = new Triple(ensisa, isAt, _x);
 		System.out.println(t1.toString());
 
 		DB db = new DB();
 		db.addDB(t1); 
 		db.addDB(t2); 
-		db.addDB(t3); 
-		db.addDB(new Triple("Amy","worksFor","ENSISA")); 
-		db.addDB(new Triple("Amy","is","SoftEng"));
+		//db.addDB(t3); 
+		db.addDB(new Triple(amy, worksFor, ensisa)); 
+		db.addDB(new Triple(amy, isa, softEng));
 		System.out.println(db + "\n");
 		
 		/*
@@ -38,12 +53,12 @@ public final class Main {
 		*/
 		
 		DB pat1 = new DB();
-		pat1.addDB(new Triple("?X","isAt","?Y"));
-		pat1.addDB(new Triple("?Z","worksFor","?X"));
-		pat1.addDB(new Triple("?Z","is","SoftEng"));
+		pat1.addDB(new Triple(_x, isAt, _y));
+		pat1.addDB(new Triple(_z, worksFor, _x));
+		pat1.addDB(new Triple(_z, isa, softEng));
 		System.out.println(pat1 + "\n");
 		System.out.println(db.answer(pat1));
-		
+		/*
 		AllDataToLocalFile data = new AllDataToLocalFile();
 		data.addTriple(t1);
 		data.addTriple(t2);
@@ -68,6 +83,7 @@ public final class Main {
 			e.printStackTrace();
 		}
 		System.out.println("data read from " + data2.createPath("tmp"));
+		*/
 	}
 	
 	public static void mainTerminal() {
@@ -76,29 +92,45 @@ public final class Main {
 	}
 	
 	private static void mainProcessV2() {
+		KInstance laurent = new KInstance("laurent");
+		KInstance man = new KInstance("man");
+		KInstance sophie = new KInstance("sophie");
+		KInstance marriedInstance = new KInstance("married");	//TODO
+		KInstance _x = new KInstance("?X");
+		KInstance _y = new KInstance("?Y");
+		KInstance type = new KInstance("type");
+		KInstance _z = new KInstance("?Z");
+		
+		KClass symetric = new KClass("symetric");
+		
+		KRelation isa = new KRelation("isa");
+		KRelation married = new KRelation("married");
+		KRelation is = new KRelation("is");
+		KRelation _xRelation = new KRelation("?X");		//TODO
+		
 		DB db = new DB();
-		db.addDB(new Triple("laurent", "isa", "man"));
-		db.addDB(new Triple("laurent", "married", "sophie"));
-		db.addDB(new Triple("married", "is", "symetric"));
+		db.addDB(new Triple(laurent, isa, man));
+		db.addDB(new Triple(laurent, married, sophie));
+		db.addDB(new Triple(marriedInstance, is, symetric));	//TODO
 		System.out.println("-- Facts --\n" + db.toString() + "\n");
 		
 		DB pat = new DB();
-		pat.addDB(new Triple("?X", "isa", "man"));
-		pat.addDB(new Triple("?X", "married", "sophie"));
+		pat.addDB(new Triple(_x, isa, man));
+		pat.addDB(new Triple(_x, married, sophie));
 		System.out.println("Query : " + pat.toString() + "\n");
 		
 		Result res = db.answer(pat);
 		System.out.println("Results : " + res.toString() + "\n");
 		
 		DB preRule1 = new DB(), postRule1 = new DB();
-		preRule1.addDB(new Triple("?Y", "isa", "?X"));
-		postRule1.addDB(new Triple("?X", "is", "type"));
+		preRule1.addDB(new Triple(_y, isa, _x));
+		postRule1.addDB(new Triple(_x, is, type));
 		Rule rule1 = new Rule(preRule1, postRule1);
 		
 		DB preRule2 = new DB(), postRule2 = new DB();
-		preRule2.addDB(new Triple("?X", "is", "symetric"));
-		preRule2.addDB(new Triple("?Y", "?X", "?Z"));
-		postRule2.addDB(new Triple("?Z", "?X", "?Y"));
+		preRule2.addDB(new Triple(_x, is, symetric));
+		preRule2.addDB(new Triple(_y, _xRelation, _z));
+		postRule2.addDB(new Triple(_z, _xRelation, _y));
 		Rule rule2 = new Rule(preRule2, postRule2);
 		
 		Rules rs = new Rules();
@@ -107,6 +139,7 @@ public final class Main {
 		rs.inference(db);
 		System.out.println("\n-- Inference --\nRules : \n" + rs.toString() + "New Facts :\n" + db.toString() + "\n");
 		
+		/*
 		AllDataToLocalFile data = new AllDataToLocalFile();
 		data.addDB(db);
 		data.addDB(pat);
@@ -130,58 +163,89 @@ public final class Main {
 			e.printStackTrace();
 		}
 		System.out.println("data read from " + data2.createPath("firstExample"));
+		*/
 	}
 	
 	private static void mainSerializationStudents() {
+		KClass humain = new KClass("humain");
+		KClass matiere = new KClass("matiere");
+		KClass ue = new KClass("UE");
+		KClass note = new KClass("note");
+		KClass eleve = new KClass("eleve");
+		KClass enseignant = new KClass("enseignant");
+		
+		KRelation isa = new KRelation("isa");
+		KRelation etudieAvec = new KRelation("etudieAvec");
+		KRelation enseigneA = new KRelation("enseigneA");
+		KRelation etudieEn = new KRelation("etudieEn");
+		KRelation estDansLUE = new KRelation("estDansL'UE");
+		KRelation aEu20En = new KRelation("aEu20En");
+		KRelation aEu19En = new KRelation("aEu19En");
+		KRelation aEu18En = new KRelation("aEu18En");
+		KRelation aEu17En = new KRelation("aEu17En");
+		
+		KInstance thomas = new KInstance("thomas");
+		KInstance icg = new KInstance("ICG");
+		KInstance maths = new KInstance("Maths");
+		KInstance mThiry = new KInstance("M.Thiry");
+		KInstance informatique = new KInstance("informatique");
+		KInstance _x = new KInstance("?X");
+		KInstance _y = new KInstance("?Y");
+		KInstance _z = new KInstance("?Z");
+		
 		DB db = new DB();
+		/*
 		//class declarations
 		db.addDB(new Triple("humain", "isa", "classe"));
 		db.addDB(new Triple("matiere", "isa", "classe"));
 		db.addDB(new Triple("UE", "isa", "classe"));
 		db.addDB(new Triple("note", "isa", "classe"));
+		*/
 		//class inheritance
-		db.addDB(new Triple("eleve", "isa", "humain"));
-		db.addDB(new Triple("enseignant", "isa", "humain"));
+		db.addDB(new Triple(eleve, isa, humain));
+		db.addDB(new Triple(enseignant, isa, humain));
 		//classes relation 
-		db.addDB(new Triple("eleve", "etudieAvec", "enseignant"));
-		db.addDB(new Triple("enseignant", "enseigneA", "eleve"));
-		db.addDB(new Triple("eleve", "etudieEn", "matiere"));
-		db.addDB(new Triple("matiere", "estDansL'UE", "UE"));
+		db.addDB(new Triple(eleve, etudieAvec, enseignant));
+		db.addDB(new Triple(enseignant, enseigneA, eleve));
+		db.addDB(new Triple(eleve, etudieEn, matiere));
+		db.addDB(new Triple(matiere, estDansLUE, ue));
 		//problem with the relation 
-		db.addDB(new Triple("eleve", "aEu20En", "matiere"));
-		db.addDB(new Triple("eleve", "aEu19En", "matiere"));
-		db.addDB(new Triple("eleve", "aEu18En", "matiere"));
-		db.addDB(new Triple("eleve", "aEu17En", "matiere"));
+		db.addDB(new Triple(eleve, aEu20En, matiere));
+		db.addDB(new Triple(eleve, aEu19En, matiere));
+		db.addDB(new Triple(eleve, aEu18En, matiere));
+		db.addDB(new Triple(eleve, aEu17En, matiere));
 		//instanciation
-		db.addDB(new Triple("thomas", "aEu20En", "ICG"));
-		db.addDB(new Triple("thomas", "aEu17En", "Maths"));
-		db.addDB(new Triple("thomas", "etudieAvec", "M.Thiry"));
-		db.addDB(new Triple("ICG", "estDansL'UE", "informatique"));
+		db.addDB(new Triple(thomas, aEu20En, icg));
+		db.addDB(new Triple(thomas, aEu17En, maths));
+		db.addDB(new Triple(thomas, etudieAvec, mThiry));
+		db.addDB(new Triple(icg, estDansLUE, informatique));
 		
 		System.out.println("-- Facts --\n" + db.toString() + "\n");
 		
 		DB pat = new DB();
-		pat.addDB(new Triple("?X", "aEu20En", "?Y"));
-		pat.addDB(new Triple("?Y", "estDansL'UE", "informatique"));
+		pat.addDB(new Triple(_x, aEu20En, _y));
+		pat.addDB(new Triple(_y, estDansLUE, informatique));
 		System.out.println("Query : " + pat.toString() + "\n");
 		
 		Result res = db.answer(pat);
 		System.out.println("Results : " + res.toString() + "\n");
 		
 		DB preRule1 = new DB(), postRule1 = new DB();
-		preRule1.addDB(new Triple("?Y", "isa", "?X"));
-		postRule1.addDB(new Triple("?X", "is", "type"));
+		preRule1.addDB(new Triple(_y, isa, _x));
+		//postRule1.addDB(new Triple(_x, is, type));
 		Rule rule1 = new Rule(preRule1, postRule1);
 		
+		/*
 		DB preRule2 = new DB(), postRule2 = new DB();
 		preRule2.addDB(new Triple("?X", "is", "symetric"));
-		preRule2.addDB(new Triple("?Y", "?X", "?Z"));
-		postRule2.addDB(new Triple("?Z", "?X", "?Y"));
+		preRule2.addDB(new Triple(_y, _x, _z));
+		postRule2.addDB(new Triple(_z, _x, _y));
 		Rule rule2 = new Rule(preRule2, postRule2);
+		*/
 		
 		Rules rs = new Rules();
 		rs.addRule(rule1);
-		rs.addRule(rule2);
+		//rs.addRule(rule2);
 		
 		/*
 		AllDataToLocalFile data = new AllDataToLocalFile();
@@ -211,6 +275,7 @@ public final class Main {
 	}
 	
 	private static void mainSerializationEvent() {
+		/*
 		DB db = new DB();
 		//classes relation 
 		db.addDB(new Triple("groupeDeMusique", "jouePour", "festival"));
@@ -253,7 +318,7 @@ public final class Main {
 		Rules rs = new Rules();
 		rs.addRule(rule1);
 		rs.addRule(rule2);
-		
+		*/
 		/*
 		AllDataToLocalFile data = new AllDataToLocalFile();
 		data.addDB(db);
@@ -284,8 +349,8 @@ public final class Main {
 	public static void main(String[] args) {
 		//mainDeclarationTripleDbAlldatatolocalfile();
 		//mainTerminal();
-		//mainProcessV2();
+		mainProcessV2();				//TODO
 		//mainSerializationStudents();
-		mainSerializationEvent();
+		//mainSerializationEvent();
 	}
 }
