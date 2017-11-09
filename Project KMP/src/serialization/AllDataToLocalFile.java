@@ -1,4 +1,4 @@
-package process2;
+package serialization;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
