@@ -5,6 +5,7 @@ Declaration 	:= Instanciation
 				| Class
 				| Instance
 				| Relation
+				| TripleM
 			
 Instanciation	:= ?X:class has ?Y:instance
 				| ?X:instance is ?Y:class
@@ -36,9 +37,13 @@ Show			:= show ?X:class|instance|relation
 
 Triple			:= ?[ ?X(:Model) ?Y(:relation|TripleR) ?Z(:Model) ]
 
-TripleR			:= ?[ ?X(:relation) ?Y(:Model|Triple) ?Z(:relation) ]
+Object			:= class|instance|relation
 
 Model			:= class|instance
+
+TripleM			:= ?X(:Model) ?Y(:relation|TripleR) ?Z(:Model)
+
+TripleR			:= ?X(:relation) ?Y(:Model|TripleM) ?Z(:relation)
 
 
 Example:
