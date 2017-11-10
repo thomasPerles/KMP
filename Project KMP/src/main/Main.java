@@ -3,11 +3,11 @@ package main;
 import kPackage.KClass;
 import kPackage.KInstance;
 import kPackage.KRelation;
+import kPackage.Triple;
 import process.DB;
 import process.Result;
 import process.Rule;
 import process.Rules;
-import process.Triple;
 
 public final class Main {
 

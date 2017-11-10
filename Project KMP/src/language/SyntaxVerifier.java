@@ -1,11 +1,13 @@
 package language;
 
-import java.awt.List;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import kPackage.KModel;
+import kPackage.KRelation;
+import kPackage.Triple;
+import kPackage.TripleR;
 import terminal.Terminal;
 
 public class SyntaxVerifier {
@@ -94,9 +96,37 @@ public class SyntaxVerifier {
 			}
 		}
 	}
-
-	public void verify(String[] tokens) {
-		
+	
+	private KRelation buildKRelation(String[] tokens) {
+		if(tokens.length > 1) {
+			KRelation leftLink = new KRelation(tokens[0]);
+			KRelation rightLink = new KRelation(tokens[tokens.length - 1]);
+			tokens = Arrays.copyOfRange(tokens, 1, tokens.length - 1);
+			KModel model = buildTriple(tokens);
+			return new TripleR(leftLink, model, rightLink);
+		}
+		return new KRelation(tokens[0]);
 	}
 	
+	private KModel buildTriple(String [] tokens) {
+		if(tokens.length > 1) {
+			KModel source = new KModel(tokens[0]);
+			KModel destination = new KModel(tokens[tokens.length - 1]);
+			tokens = Arrays.copyOfRange(tokens, 1, tokens.length - 1);
+			KRelation link = buildKRelation(tokens);
+			return new Triple(source, link, destination);
+		}
+		return new KModel(tokens[0]);
+	}
+
+	public void verify(String[] tokens) throws IllegalWordCountException {
+		// Pre verification of submitted tokens. 
+		if(tokens.length % 2 != 1) {
+			throw new IllegalWordCountException();
+		}
+		// If ok
+		Triple triple = (kPackage.Triple) buildTriple(tokens);
+		System.out.println(triple.simpleToString());
+		// Send it off to the database
+	}
 }

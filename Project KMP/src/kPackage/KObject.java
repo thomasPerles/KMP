@@ -8,10 +8,15 @@ public abstract class KObject {
 		return id;
 	}
 
-	@Override
-	public String toString() {
+	public String simpleToString() {
 		return id;
 	}
 	
-	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == this) return true;
+		if(!(obj instanceof KObject)) return false;
+		KObject kObject = (KObject) obj;
+		return this.id.equals(kObject.id);
+	}
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import language.IllegalWordCountException;
 import language.SyntaxVerifier;
 
 public class Terminal implements Runnable {
@@ -19,8 +20,8 @@ public class Terminal implements Runnable {
 	public Terminal(InputStream in, PrintStream out, SyntaxVerifier sv) {
 		this.in = in;
 		this.out = out;
-		scanner = new Scanner(in);
 		this.sv = sv;
+		scanner = new Scanner(in);
 		sv.setTerminal(this);
 		hasQuit = false;
 	}
@@ -58,7 +59,11 @@ public class Terminal implements Runnable {
 				sv.suggest(Arrays.copyOf(tokens, length));
 				break;
 			default:
-				sv.verify(tokens);
+				try {
+					sv.verify(tokens);
+				} catch (IllegalWordCountException e) {
+					System.err.println(e.getMessage());;
+				}
 			}
 		}
 	}

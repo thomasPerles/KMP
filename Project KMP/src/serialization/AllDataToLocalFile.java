@@ -8,12 +8,12 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import kPackage.Triple;
 import process.Context;
 import process.DB;
 import process.Result;
 import process.Rule;
 import process.Rules;
-import process.Triple;
 
 public class AllDataToLocalFile implements Serializable {
 
