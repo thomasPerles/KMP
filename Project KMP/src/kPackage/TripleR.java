@@ -28,9 +28,9 @@ public class TripleR extends KRelation {
 	}
 	
 	@Override
-	public String toString() {
+	public String simpleToString() {
 		StringBuilder res = new StringBuilder();
-		res.append("\n(").append(leftLink.simpleToString()).append(' ').append(model.simpleToString()).append(' ').append(rightLink.simpleToString()).append(')');
+		res.append('(').append(leftLink.simpleToString()).append(' ').append(model.simpleToString()).append(' ').append(rightLink.simpleToString()).append(')');
 		return res.toString();
 	}
 	

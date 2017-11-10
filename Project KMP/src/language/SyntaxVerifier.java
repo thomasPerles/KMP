@@ -101,9 +101,9 @@ public class SyntaxVerifier {
 		if(tokens.length > 1) {
 			KRelation leftLink = new KRelation(tokens[0]);
 			KRelation rightLink = new KRelation(tokens[tokens.length - 1]);
-			tokens = Arrays.copyOfRange(tokens, 1, tokens.length - 2);
-			Triple subTriple = (kPackage.Triple) buildTriple(tokens);
-			return new TripleR(leftLink, subTriple, rightLink);
+			tokens = Arrays.copyOfRange(tokens, 1, tokens.length - 1);
+			KModel model = buildTriple(tokens);
+			return new TripleR(leftLink, model, rightLink);
 		}
 		return new KRelation(tokens[0]);
 	}
@@ -112,7 +112,7 @@ public class SyntaxVerifier {
 		if(tokens.length > 1) {
 			KModel source = new KModel(tokens[0]);
 			KModel destination = new KModel(tokens[tokens.length - 1]);
-			tokens = Arrays.copyOfRange(tokens, 1, tokens.length - 2);
+			tokens = Arrays.copyOfRange(tokens, 1, tokens.length - 1);
 			KRelation link = buildKRelation(tokens);
 			return new Triple(source, link, destination);
 		}
@@ -126,6 +126,7 @@ public class SyntaxVerifier {
 		}
 		// If ok
 		Triple triple = (kPackage.Triple) buildTriple(tokens);
+		System.out.println(triple.simpleToString());
 		// Send it off to the database
 	}
 }

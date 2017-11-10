@@ -27,5 +27,12 @@ public class KRelation extends KObject {
 		return res.toString();
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == this) return true;
+		if(!(obj instanceof KRelation)) return false;
+		KRelation kRelation = (KRelation) obj;
+		return this.id.equals(kRelation.id) && this.domain.equals(kRelation.domain) && this.range.equals(kRelation.range);
+	}
 	
 }

@@ -18,9 +18,9 @@ public class Triple extends KModel implements Serializable {
 	}
 
 	@Override
-	public String toString() {
+	public String simpleToString() {
 		StringBuilder res = new StringBuilder();
-		res.append("\n(").append(source.simpleToString()).append(' ').append(link.simpleToString()).append(' ').append(destination.simpleToString()).append(')');
+		res.append("(").append(source.simpleToString()).append(' ').append(link.simpleToString()).append(' ').append(destination.simpleToString()).append(')');
 		return res.toString();
 	}
 
