@@ -26,4 +26,6 @@ public class KRelation extends KObject {
 		res.append("\n range is ").append(range.simpleToString());
 		return res.toString();
 	}
+	
+	
 }
