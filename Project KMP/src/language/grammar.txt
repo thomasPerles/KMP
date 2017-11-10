@@ -1,0 +1,55 @@
+Starter				| Declaration
+					| Display
+
+Declaration 		| Instanciation
+					| Class
+					| Instance
+					| Relation
+			
+Instanciation		| class has instance
+					| instance is class
+					| class Relation class
+					| instance Relation instance
+
+Class				| class equivalentC class
+					| class inheritsC class
+					| class differentC class
+
+Instance 			| instance equivalentI instance
+					| instance differentI instance
+			
+Relation			| relation equivalentR relation
+					| relation inheritsR relation
+					| relation differentR relation
+					| relation is symetric
+					| relation is asymetric
+					| relation is reflexive
+					| relation is irreflexive
+					| relation is functional
+					| relation is inverseFunctional
+					| relation is transitive
+
+Display 			| Show
+					| Triple
+			
+Show				| show class
+					| show instance
+					| show relation
+
+Triple				| ?[ Model Relation Model ]
+
+Object				| class
+					| instance
+					| relation
+
+Model				| class
+					| instance
+					| CompositeModel
+				
+CompositeModel		| Model Relation Model
+
+Relation			| relation
+					| CompositeRelation
+
+CompositeRelation 	| Relation Model Relation
+

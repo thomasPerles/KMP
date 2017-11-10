@@ -2,22 +2,20 @@ package terminal;
 
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 import language.IllegalWordCountException;
-import language.SyntaxVerifier;
+import language.StringProcessor;
 
 public class Terminal implements Runnable {
 	
 	private InputStream in;
 	private PrintStream out;
 	private Scanner scanner;
-	private SyntaxVerifier sv;
+	private StringProcessor sv;
 	private boolean hasQuit;
 	
-	public Terminal(InputStream in, PrintStream out, SyntaxVerifier sv) {
+	public Terminal(InputStream in, PrintStream out, StringProcessor sv) {
 		this.in = in;
 		this.out = out;
 		this.sv = sv;
@@ -53,17 +51,10 @@ public class Terminal implements Runnable {
 		while(!hasQuit) {
 			prompt();
 			String tokens[] = consume();
-			switch(tokens[tokens.length - 1]) {
-			case "help":
-				int length = tokens.length - 1;
-				sv.suggest(Arrays.copyOf(tokens, length));
-				break;
-			default:
-				try {
-					sv.verify(tokens);
-				} catch (IllegalWordCountException e) {
-					System.err.println(e.getMessage());;
-				}
+			try {
+				sv.process(tokens);
+			} catch (IllegalWordCountException e) {
+				System.err.println(e.getMessage());;
 			}
 		}
 	}

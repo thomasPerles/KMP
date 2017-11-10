@@ -2,14 +2,11 @@ package kPackage;
 
 import java.io.Serializable;
 
-public class Triple extends KModel implements Serializable {
+public class Triple implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private KRelation link;
 	private KModel source, destination;
+	private KRelation link;	
 	
 	public Triple(KModel source, KRelation link, KModel destination) {
 		this.source = source;
@@ -18,9 +15,9 @@ public class Triple extends KModel implements Serializable {
 	}
 
 	@Override
-	public String simpleToString() {
+	public String toString() {
 		StringBuilder res = new StringBuilder();
-		res.append("(").append(source.simpleToString()).append(' ').append(link.simpleToString()).append(' ').append(destination.simpleToString()).append(')');
+		res.append("\n(").append(source.simpleToString()).append(' ').append(link.simpleToString()).append(' ').append(destination.simpleToString()).append(')');
 		return res.toString();
 	}
 

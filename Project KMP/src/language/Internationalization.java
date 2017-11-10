@@ -12,7 +12,7 @@ public class Internationalization {
 		ResourceBundle bundleFR = ResourceBundle.getBundle("language/ApplicationMessages_Natural", Locale.FRANCE);
 		ResourceBundle bundleMath = ResourceBundle.getBundle("language/ApplicationMessages_Math");
 		
-		SyntaxVerifier sv = new SyntaxVerifier(bundleEN);
+		StringProcessor sv = new StringProcessor(bundleEN);
 		Terminal terminal = new Terminal(System.in, System.out, sv);
 		new Thread(terminal).start();
 	}
