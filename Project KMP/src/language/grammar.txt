@@ -1,12 +1,12 @@
 Starter				| Declaration
 					| Display
 
-Declaration 		| Instanciation
+Declaration 		| Instantiation
 					| Class
 					| Instance
 					| Relation
 			
-Instanciation		| class has instance
+Instantiation		| class has instance
 					| instance is class
 					| class Relation class
 					| instance Relation instance
@@ -21,8 +21,8 @@ Instance 			| instance equivalentI instance
 Relation			| relation equivalentR relation
 					| relation inheritsR relation
 					| relation differentR relation
-					| relation is symetric
-					| relation is asymetric
+					| relation is symmetric
+					| relation is asymmetric
 					| relation is reflexive
 					| relation is irreflexive
 					| relation is functional
