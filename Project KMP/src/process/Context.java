@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import kPackage.KModel;
 import kPackage.KObject;
 import kPackage.KRelation;
+import kPackage.Triple;
 
 public class Context implements Serializable {
 
@@ -64,9 +65,9 @@ public class Context implements Serializable {
 	}
 	
 	public boolean tripleMatch(Triple pat, Triple exp) {
-		if(valueMatch(pat.getS(), exp.getS()))
-			if(valueMatch(pat.getL(), exp.getL()))
-				return valueMatch(pat.getD(), exp.getD());
+		if(valueMatch(pat.getSource(), exp.getSource()))
+			if(valueMatch(pat.getLink(), exp.getLink()))
+				return valueMatch(pat.getDestination(), exp.getDestination());
 		return false;
 	}
 	
@@ -76,18 +77,18 @@ public class Context implements Serializable {
 	public Triple evaluateTriple(Triple t) {
 		KModel s = null, d = null;
 		KRelation l = null;
-		if (t.getS().getId().toCharArray()[0] == '?') 
-			s = (KModel) this.getVariable(t.getS());
+		if (t.getSource().getId().toCharArray()[0] == '?') 
+			s = (KModel) this.getVariable(t.getSource());
 		else
-			s = t.getS();
-		if (t.getL().getId().toCharArray()[0] == '?') 
-			l = (KRelation) this.getVariable(t.getL());
+			s = t.getSource();
+		if (t.getLink().getId().toCharArray()[0] == '?') 
+			l = (KRelation) this.getVariable(t.getLink());
 		else
-			l = t.getL();
-		if (t.getD().getId().toCharArray()[0] == '?') 
-			d = (KModel) this.getVariable(t.getD());
+			l = t.getLink();
+		if (t.getDestination().getId().toCharArray()[0] == '?') 
+			d = (KModel) this.getVariable(t.getDestination());
 		else
-			d = t.getD();
+			d = t.getDestination();
 		return new Triple(s, l, d);
 	}
 }

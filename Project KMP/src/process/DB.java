@@ -3,6 +3,8 @@ package process;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import kPackage.Triple;
+
 public class DB implements Serializable {
 	
 	/**

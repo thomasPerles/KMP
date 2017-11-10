@@ -18,4 +18,24 @@ public class KClass extends KModel {
 	public boolean hasInstance(KInstance instance) {
 		return this.instances.contains(instance);
 	}
+	
+	@Override
+	public String toString() {
+		StringBuffer res = new StringBuffer();
+		res.append('\n').append(simpleToString()).append(" is a class");
+		res.append("\nhas instances :");
+		for(KInstance instance : instances) {
+			res.append("\n\t").append(instance.simpleToString());
+		}
+		return res.toString();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == this) return true;
+		if(!(obj instanceof KClass)) return false;
+		KClass kClass = (KClass) obj;
+		return this.id.equals(kClass.id) && this.instances.equals(kClass.instances); 
+	}
+	
 }

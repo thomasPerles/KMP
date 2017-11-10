@@ -12,4 +12,20 @@ public class KInstance extends KModel {
 		this.id = id;
 		this.kClass = kClass;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder res = new StringBuilder();
+		res.append('\n').append(simpleToString()).append(" is an instance");
+		res.append("\nis instance of ").append(kClass.simpleToString());
+		return res.toString();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == this) return true;
+		if(!(obj instanceof KInstance)) return false;
+		KInstance kInstance = (KInstance) obj;
+		return this.id.equals(kInstance.id) && this.kClass.equals(kInstance.kClass); 
+	}
 }
