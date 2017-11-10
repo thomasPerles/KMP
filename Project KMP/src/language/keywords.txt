@@ -1,28 +1,83 @@
-Starter		:= Declaration
-			| Display
+Starter			:= Declaration
+				| Display
 
-Declaration := Class
-			|  Instance
-			| Relation
+Declaration 	:= Instanciation
+				| Class
+				| Instance
+				| Relation
 			
-Class		:= class ?X
-			| class ?X has ?Y
+Instanciation	:= ?X:class has ?Y:instance
+				| ?X:instance is ?Y:class
+				| ?X:class ?Y:relation ?Z:class
+				| ?X:instance ?Y:relation ?Z:instance
 
-Instance 	:= instance ?X is ?Y:class
-			| instance ?X
+Class			:= ?X:class equivalentC ?Y:class
+				| ?X:class inheritsC ?Y:class
+				| ?X:class differentC ?Y:class
+
+Instance 		:= ?X:instance equivalentI ?Y:instance
+				| ?X:instance differentI ?Y:instance
 			
-Relation	:= relation ?X between ?Y:class|instance and ?Z:class|instance
-			| relation ?X
+Relation		:= ?X:relation equivalentR ?Y:relation
+				| ?X:relation inheritsR ?Y:relation
+				| ?X:relation differentR ?Y:relation
+				| ?X:relation is symetric
+				| ?X:relation is asymetric
+				| ?X:relation is reflexive
+				| ?X:relation is irreflexive
+				| ?X:relation is functional
+				| ?X:relation is inverseFunctional
+				| ?X:relation is transitive
 
-Display 	:= Show
-			| Triple 
+Display 		:= Show
+				| Triple
 			
-Show		:= show ?X:class|instance|relation
+Show			:= show ?X:class|instance|relation
 
-Triple		:= ?[ ?X(:class|instance) ?Y(:relation) ?Z(:class|instance) ]
+Triple			:= ?[ ?X(:Model) ?Y(:relation|TripleR) ?Z(:Model) ]
+
+TripleR			:= ?[ ?X(:relation) ?Y(:Model|Triple) ?Z(:relation) ]
+
+Model			:= class|instance
 
 
 Example:
+
+Laurent is Man
+Man has Laurent
+
+Man isMarried Woman
+Laurent isMarried Sophie
+
+Man equivalentC Male
+Man inheritsC Human
+Man differentC Woman					//disjointWith
+
+Laurent equivalentI Laurent_Thiry		//sameAs
+Laurent differentI Sophie				//differentTo
+
+isMarried equivalentR together
+isMarried inheritsR hasRelation
+isMarried differentR isDivorced			//inverseOf
+
+isMarried is symetric
+isMarried is asymetric
+isMarried is reflexive
+isMarried is irreflexive
+isMarried is functional
+isMarried is inverseFunctional
+isMarried is transitive
+
+
+Laurent aEu 20 en Maths a ENSISA
+
+
+
+
+
+
+
+old Example:
 
 class Country
 instance France of Country
