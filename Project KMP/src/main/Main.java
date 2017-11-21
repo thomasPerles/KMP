@@ -58,11 +58,57 @@ public final class Main {
 		pat1.addDB(new Triple(_z, isa, softEng));
 		System.out.println(pat1 + "\n");
 		System.out.println(db.answer(pat1));
-
+	}
+		
+	public static void mainInference() {	
+		KInstance john = new KInstance("John");
+		KInstance amy = new KInstance("Amy");
+		KClass man = new KClass("man");
+		KClass woman = new KClass("woman");
+		KRelation is = new KRelation("is");
+		KRelation isMarried = new KRelation("isMarried");
+		KInstance _x = new KInstance("?X");
+		KInstance _y = new KInstance("?Y");
+		KInstance _z = new KInstance("?Z");
+		KRelation _w = new KRelation("?W");
+		
+		DB db = new DB();
+		db.addDB(new Triple(john, is, man));
+		db.addDB(new Triple(man, isMarried, woman));
+		db.addDB(new Triple(john, isMarried, amy));
+		System.out.println("-- Facts --" + db.toString() + "\n");
+		
+		DB pat = new DB();
+		pat.addDB(new Triple(_x, is, man));
+		pat.addDB(new Triple(_x, isMarried, amy));
+		System.out.println("Query : " + pat.toString());
+		
+		Result res = db.answer(pat);
+		System.out.println("\nResults :\n" + res.toString() + "\n");
+		
+		DB preRule1 = new DB(), postRule1 = new DB();
+		preRule1.addDB(new Triple(_y, is, _x));
+		Rule rule1 = new Rule(preRule1, postRule1);
+		
+		DB preRule2 = new DB(), postRule2 = new DB();
+		//TODO applique symetric sur toutes les relations
+		//preRule2.addDB(new Triple(_w, is, symetric));
+		//preRule2.addDB(new Triple(_y, _w, _z));
+		//postRule2.addDB(new Triple(_z, _w, _y));
+		preRule2.addDB(new Triple(_y, isMarried, _z));
+		postRule2.addDB(new Triple(_z, isMarried, _y));
+		Rule rule2 = new Rule(preRule2, postRule2);
+		
+		Rules rs = new Rules();
+		rs.addRule(rule1);
+		rs.addRule(rule2);
+		rs.inference(db);
+		System.out.println("\n\n-- Inference --\n\nRules :" + rs.toString() + "\nNew Facts :" + db.toString() + "\n");
 	}
 	
 	
 	public static void main(String[] args) {
-		mainDeclarationTripleDbAlldatatolocalfile();
+		//mainDeclarationTripleDbAlldatatolocalfile();
+		mainInference();
 	}
 }
