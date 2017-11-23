@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
-import java.util.stream.Stream;
-
 import kPackage.KCompositeModel;
 import kPackage.KCompositeRelation;
 import kPackage.KModel;
@@ -64,8 +62,8 @@ public class StringProcessor {
 	}
 
 	/**
-	 * Offers suggestions as to what the user may want to say according to
-	 * submitted tokens.
+	 * Offers suggestions as to what the user may want to say according to submitted
+	 * tokens.
 	 * 
 	 * @param tokens
 	 */
@@ -128,8 +126,32 @@ public class StringProcessor {
 			case "has":
 				addInstanceToClass(tokens[0], tokens[2]);
 				break;
-			case "is":
+			case "isC":
 				defineInstanceOfClass(tokens[0], tokens[2]);
+				break;
+			case "equivalentC":
+				establishClassEquivalence(tokens[0], tokens[2]);
+				break;
+			case "inheritsC":
+				establishClassInheritance(tokens[0], tokens[2]);
+				break;
+			case "differentC":
+				seperateClasses(tokens[0], tokens[2]);
+				break;
+			case "equivalentI":
+				establishInstanceEquivalence(tokens[0], tokens[2]);
+				break;
+			case "differentI":
+				seperateInstances(tokens[0], tokens[2]);
+				break;
+			case "equivalentR":
+				establishRelationEquivalence(tokens[0], tokens[2]);
+				break;
+			case "inheritsR":
+				establishRelationInheritance(tokens[0], tokens[2]);
+				break;
+			case "differentR":
+				seperateRelations(tokens[0], tokens[2]);
 				break;
 			case "help":
 				suggest(tokens);
@@ -150,8 +172,50 @@ public class StringProcessor {
 		// Send it off to the database for validation and CRUD operations
 	}
 
+	private void seperateRelations(String first, String second) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void establishRelationInheritance(String first, String second) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void establishRelationEquivalence(String first, String second) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void seperateInstances(String first, String second) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void establishInstanceEquivalence(String first, String second) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void seperateClasses(String first, String second) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void establishClassInheritance(String first, String second) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void establishClassEquivalence(String first, String second) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	/**
-	 * Tells the database that the first token is to be recognised as an instance of the second token.
+	 * Tells the database that the first token is to be recognised as an instance of
+	 * the second token.
+	 * 
 	 * @param first
 	 * @param second
 	 */
@@ -160,7 +224,9 @@ public class StringProcessor {
 	}
 
 	/**
-	 * Tells the database that the first token is to be recognised as a class whose instances include the second token.
+	 * Tells the database that the first token is to be recognised as a class whose
+	 * instances include the second token.
+	 * 
 	 * @param first
 	 * @param second
 	 */
@@ -169,8 +235,7 @@ public class StringProcessor {
 	}
 
 	/**
-	 * Reads and displays information from database according to submitted
-	 * tokens.
+	 * Reads and displays information from database according to submitted tokens.
 	 * 
 	 * @param tokens
 	 */

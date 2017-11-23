@@ -7,7 +7,7 @@ Declaration 		= Instantiation
 					| Relation
 			
 Instantiation		= class has instance
-					| instance is class
+					| instance isC class
 					| class Relation class
 					| instance Relation instance
 
@@ -21,13 +21,13 @@ Instance 			= instance equivalentI instance
 Relation			= relation equivalentR relation
 					| relation inheritsR relation
 					| relation differentR relation
-					| relation is symmetric
-					| relation is asymmetric
-					| relation is reflexive
-					| relation is irreflexive
-					| relation is functional
-					| relation is inverseFunctional
-					| relation is transitive
+					| relation isR symmetric
+					| relation isR asymmetric
+					| relation isR reflexive
+					| relation isR irreflexive
+					| relation isR functional
+					| relation isR inverseFunctional
+					| relation isR transitive
 
 Display 			= Show
 					| Triple
