@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.stream.Stream;
 
 import kPackage.KCompositeModel;
 import kPackage.KCompositeRelation;
@@ -17,24 +18,28 @@ import kPackage.Triple;
 import terminal.Terminal;
 
 public class StringProcessor {
-	
+
 	private ResourceBundle bundle;
 	private Terminal terminal;
 	private ArrayList<String[]> patterns;
-	
+
 	public StringProcessor(ResourceBundle bundle) {
 		this.bundle = bundle;
 		this.patterns = new ArrayList<String[]>();
 		loadGrammar();
 	}
-	
+
+	/**
+	 * Loads internal grammar used by KMP. The grammar is (should) be EBNF
+	 * compliant.
+	 */
 	private void loadGrammar() {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(new File("src/language/grammar.txt")));
 			String line = null;
-			while((line = br.readLine()) != null) {
-				String[] splittedLine = line.split("\\|");
-				if(splittedLine.length > 1) {
+			while ((line = br.readLine()) != null) {
+				String[] splittedLine = line.split("\\|=");
+				if (splittedLine.length > 1) {
 					String[] followers = splittedLine[1].split(" ");
 					patterns.add(followers);
 				}
@@ -50,26 +55,32 @@ public class StringProcessor {
 	public void setTerminal(Terminal terminal) {
 		this.terminal = terminal;
 	}
-	
+
 	private void printSuggestion(String[] pattern) {
 		terminal.println("\t");
-		for(String word : pattern) {
+		for (String word : pattern) {
 			terminal.print(' ' + word);
 		}
 	}
 
+	/**
+	 * Offers suggestions as to what the user may want to say according to
+	 * submitted tokens.
+	 * 
+	 * @param tokens
+	 */
 	private void suggest(String[] tokens) {
-		for(String[] pattern : patterns) {
-			for(String token : tokens) {
-				if(Arrays.asList(pattern).contains(token)) {
+		for (String[] pattern : patterns) {
+			for (String token : tokens) {
+				if (Arrays.asList(pattern).contains(token)) {
 					printSuggestion(pattern);
 				}
 			}
 		}
 	}
-	
+
 	private KRelation buildKRelation(String[] tokens) {
-		if(tokens.length > 1) {
+		if (tokens.length > 1) {
 			KRelation leftLink = new KRelation(tokens[0]);
 			KRelation rightLink = new KRelation(tokens[tokens.length - 1]);
 			tokens = Arrays.copyOfRange(tokens, 1, tokens.length - 1);
@@ -78,9 +89,9 @@ public class StringProcessor {
 		}
 		return new KRelation(tokens[0]);
 	}
-	
+
 	private KModel buildKCompositeModel(String[] tokens) {
-		if(tokens.length > 1) {
+		if (tokens.length > 1) {
 			KModel source = new KModel(tokens[0]);
 			KModel destination = new KModel(tokens[tokens.length - 1]);
 			tokens = Arrays.copyOfRange(tokens, 1, tokens.length - 1);
@@ -89,29 +100,82 @@ public class StringProcessor {
 		}
 		return new KModel(tokens[0]);
 	}
-	
-	private Triple buildTriple(String [] tokens) {
+
+	private Triple buildTriple(String[] tokens) {
 		KCompositeModel temp = (KCompositeModel) buildKCompositeModel(tokens);
 		return new Triple(temp.getSource(), temp.getLink(), temp.getDestination());
 	}
 
+	/**
+	 * Processes incoming tokens from the terminal. This is a multi-part process
+	 * involving keyword identification, syntax verification, token parsing and
+	 * feeding the information to the database.
+	 * 
+	 * @param tokens
+	 * @throws IllegalWordCountException
+	 *             - if the number of tokens is incoherent.
+	 */
 	public void process(String[] tokens) throws IllegalWordCountException {
-		
-		if(tokens.length % 2 != 1) {
-			throw new IllegalWordCountException();
-		}
-		// Pre verification of submitted tokens. 
-		for(String token : tokens) {
-			if(token.equals("help")) { // to localize
+
+		/*
+		 * if(tokens.length % 2 != 1) { throw new IllegalWordCountException(); }
+		 */
+
+		// keyword identification
+		for (String token : tokens) {
+			boolean keywordFound = false;
+			switch (token) {
+			case "has":
+				addInstanceToClass(tokens[0], tokens[2]);
+				break;
+			case "is":
+				defineInstanceOfClass(tokens[0], tokens[2]);
+				break;
+			case "help":
 				suggest(tokens);
+				break;
+			case "show":
+				display(tokens);
+				break;
 			}
+
+			if (keywordFound)
+				return;
 		}
-		// If ok
+
+		// If no keywords are found
 		Triple triple = buildTriple(tokens);
 		terminal.println(triple.toString());
-		
+
 		// Send it off to the database for validation and CRUD operations
 	}
 
-	
+	/**
+	 * Tells the database that the first token is to be recognised as an instance of the second token.
+	 * @param first
+	 * @param second
+	 */
+	private void defineInstanceOfClass(String first, String second) {
+		// TODO
+	}
+
+	/**
+	 * Tells the database that the first token is to be recognised as a class whose instances include the second token.
+	 * @param first
+	 * @param second
+	 */
+	private void addInstanceToClass(String first, String second) {
+		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * Reads and displays information from database according to submitted
+	 * tokens.
+	 * 
+	 * @param tokens
+	 */
+	private void display(String[] tokens) {
+		// TODO Auto-generated method stub
+	}
+
 }

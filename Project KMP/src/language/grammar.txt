@@ -1,24 +1,24 @@
-Starter				| Declaration
+Starter				= Declaration
 					| Display
 
-Declaration 		| Instantiation
+Declaration 		= Instantiation
 					| Class
 					| Instance
 					| Relation
 			
-Instantiation		| class has instance
+Instantiation		= class has instance
 					| instance is class
 					| class Relation class
 					| instance Relation instance
 
-Class				| class equivalentC class
+Class				= class equivalentC class
 					| class inheritsC class
 					| class differentC class
 
-Instance 			| instance equivalentI instance
+Instance 			= instance equivalentI instance
 					| instance differentI instance
 			
-Relation			| relation equivalentR relation
+Relation			= relation equivalentR relation
 					| relation inheritsR relation
 					| relation differentR relation
 					| relation is symmetric
@@ -29,27 +29,27 @@ Relation			| relation equivalentR relation
 					| relation is inverseFunctional
 					| relation is transitive
 
-Display 			| Show
+Display 			= Show
 					| Triple
 			
-Show				| show class
+Show				= show class
 					| show instance
 					| show relation
 
-Triple				| ?[ Model Relation Model ]
+Triple				= ?[ Model Relation Model ]
 
-Object				| class
+Object				= class
 					| instance
 					| relation
 
-Model				| class
+Model				= class
 					| instance
 					| CompositeModel
 				
-CompositeModel		| Model Relation Model
+CompositeModel		= Model Relation Model
 
-Relation			| relation
+Relation			= relation
 					| CompositeRelation
 
-CompositeRelation 	| Relation Model Relation
+CompositeRelation 	= Relation Model Relation
 
