@@ -38,7 +38,9 @@ public class KRelation extends KObject {
 	}
 
 	
-	private boolean symetric, asymetric, transitive, reflexive, irreflexive, functional, inverseFunctional;
+	private boolean symetric = false, reflexive = false, functional, inverseFunctional, transitive = false;
+	//symetric = false means asymetric
+	//reflexive = false means irreflexive
 
 	public boolean isSymetric() {
 		return symetric;
@@ -48,36 +50,12 @@ public class KRelation extends KObject {
 		this.symetric = symetric;
 	}
 
-	public boolean isAsymetric() {
-		return asymetric;
-	}
-
-	public void setAsymetric(boolean asymetric) {
-		this.asymetric = asymetric;
-	}
-
-	public boolean isTransitive() {
-		return transitive;
-	}
-
-	public void setTransitive(boolean transitive) {
-		this.transitive = transitive;
-	}
-
 	public boolean isReflexive() {
 		return reflexive;
 	}
 
 	public void setReflexive(boolean reflexive) {
 		this.reflexive = reflexive;
-	}
-
-	public boolean isIrreflexive() {
-		return irreflexive;
-	}
-
-	public void setIrreflexive(boolean irreflexive) {
-		this.irreflexive = irreflexive;
 	}
 
 	public boolean isFunctional() {
@@ -95,46 +73,70 @@ public class KRelation extends KObject {
 	public void setInverseFunctional(boolean inverseFunctional) {
 		this.inverseFunctional = inverseFunctional;
 	}
+
+	public boolean isTransitive() {
+		return transitive;
+	}
+
+	public void setTransitive(boolean transitive) {
+		this.transitive = transitive;
+	}
 	
-	public Triple symetric(KModel a, KModel b) {
-		return new Triple(b, this, a);
+	public ArrayList<Triple> symetric(ArrayList<KModel> as, ArrayList<KModel> bs) {
+		ArrayList<Triple> res =  new ArrayList<Triple>();
+		for (int i = 0; i < as.size(); i++) {
+			res.add(new Triple(bs.get(i), this, as.get(i)));
+		}
+		return res;
+	}
+	
+	public ArrayList<Triple> reflexive(ArrayList<KModel> as, ArrayList<KModel> bs) {
+		ArrayList<Triple> res =  new ArrayList<Triple>();
+		for (int i = 0; i < as.size(); i++) {
+			res.add(new Triple(as.get(i), this, as.get(i)));
+			res.add(new Triple(bs.get(i), this, bs.get(i)));
+		}
+		return res;
+	}
+	
+	/*
+	functional
+	inverseFunctional
+	*/
+	
+	public ArrayList<Triple> transitive(ArrayList<KModel> as, ArrayList<KModel> bs) {
+		ArrayList<Triple> res =  new ArrayList<Triple>();
+		for (int i = 0; i < as.size(); i++) {
+			KModel a = as.get(i), b = bs.get(i);
+			for (int j = i; j < as.size(); j++) {
+				if (a == as.get(j)) res.add(new Triple(b, this, bs.get(j)));
+				if (a == bs.get(j)) res.add(new Triple(b, this, as.get(j)));
+				if (b == as.get(j)) res.add(new Triple(a, this, bs.get(j)));
+				if (b == bs.get(j)) res.add(new Triple(a, this, as.get(j)));
+			}
+		}
+		return res;
 	}
 	
 	/*
 	equivalentR
 	inheritsR
 	differentR
-	asymetric
-	transitive
-	reflexive
-	irreflexive
-	functional
-	inverseFunctional
 	*/
 	
 	public boolean hasProperty() {
-		return /*equivalentR || inheritsR || differentR ||*/ symetric || asymetric || transitive || reflexive || irreflexive || functional || inverseFunctional;
+		return /*equivalentR || inheritsR || differentR ||*/ symetric || transitive || reflexive || functional || inverseFunctional;
 	}
 	
-	public ArrayList<Triple> applyProperties(KModel a, KModel b) {
+	public ArrayList<Triple> applyProperties(ArrayList<KModel> as, ArrayList<KModel> bs) {
 		ArrayList<Triple> res =  new ArrayList<Triple>();
-		if (isSymetric()) res.add(symetric(a, b));
+		if (isSymetric()) res.addAll(symetric(as, bs));
+		if (isReflexive()) res.addAll(reflexive(as, bs));
 		/*
-		if (isAsymetric()) res.add(asymetric(a, b));
 		if (isFunctional()) res.add(functional(a, b));
 		if (isInverseFunctional()) res.add(inverseFunctional(a, b));
-		if (isIrreflexive()) res.add(irreflexive(a, b));
-		if (isReflexive()) res.add(reflexive(a, b));
-		if (isTransitive()) res.add(transitive(a, b));
 		*/
-		return res;
-	}
-	
-	public ArrayList<Triple> applyPropertiesOnEveryTriple(ArrayList<KModel> as, ArrayList<KModel> bs) {
-		ArrayList<Triple> res =  new ArrayList<Triple>();
-		for (int i = 0; i < as.size(); i++) {
-			res.addAll(applyProperties(as.get(i), bs.get(i)));
-		}
+		if (isTransitive()) res.addAll(transitive(as, bs));
 		return res;
 	}
 }
