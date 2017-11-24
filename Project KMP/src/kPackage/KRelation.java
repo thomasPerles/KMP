@@ -90,6 +90,7 @@ public class KRelation extends KObject {
 		return res;
 	}
 	
+	// /!\ for xRy -> add xRx and yRy 
 	public ArrayList<Triple> reflexive(ArrayList<KModel> as, ArrayList<KModel> bs) {
 		ArrayList<Triple> res =  new ArrayList<Triple>();
 		for (int i = 0; i < as.size(); i++) {
@@ -118,14 +119,8 @@ public class KRelation extends KObject {
 		return res;
 	}
 	
-	/*
-	equivalentR
-	inheritsR
-	differentR
-	*/
-	
 	public boolean hasProperty() {
-		return /*equivalentR || inheritsR || differentR ||*/ symetric || transitive || reflexive || functional || inverseFunctional;
+		return symetric || transitive || reflexive || functional || inverseFunctional;
 	}
 	
 	public ArrayList<Triple> applyProperties(ArrayList<KModel> as, ArrayList<KModel> bs) {
@@ -137,6 +132,39 @@ public class KRelation extends KObject {
 		if (isInverseFunctional()) res.add(inverseFunctional(a, b));
 		*/
 		if (isTransitive()) res.addAll(transitive(as, bs));
+		return res;
+	}
+
+	
+	private ArrayList<KRelation> equivalentR = new ArrayList<KRelation>(), inheritsR = new ArrayList<KRelation>(), differentR = new ArrayList<KRelation>();
+	
+	public boolean hasPropertyOnRelation() {
+		return !(equivalentR.isEmpty() && inheritsR.isEmpty() && differentR.isEmpty());
+	}
+	
+	public ArrayList<Triple> equivalentR(ArrayList<KModel> as) {
+		ArrayList<Triple> res =  new ArrayList<Triple>();
+		
+		return res;
+	}
+	
+	public ArrayList<Triple> inheritsR(ArrayList<KModel> as) {
+		ArrayList<Triple> res =  new ArrayList<Triple>();
+		
+		return res;
+	}
+	
+	public ArrayList<Triple> differentR(ArrayList<KModel> as) {
+		ArrayList<Triple> res =  new ArrayList<Triple>();
+		
+		return res;
+	}
+
+	public ArrayList<Triple> applyPropertiesOnRelation(ArrayList<KModel> as, ArrayList<KModel> bs) {
+		ArrayList<Triple> res =  new ArrayList<Triple>();
+		if (!equivalentR.isEmpty()) res.addAll(equivalentR(as));
+		if (!inheritsR.isEmpty()) res.addAll(inheritsR(as));
+		if (!differentR.isEmpty()) res.addAll(differentR(as));
 		return res;
 	}
 }
