@@ -275,16 +275,41 @@ public class DB implements Serializable {
 		//TODO
 	}
 	
-	public ArrayList<Triple> setRelation_symmetric(String relation) {
-		//TODO
-		return null;
-	}
-
 	public ArrayList<Triple> findEveryTripleWith(KObject kObject) {
 		ArrayList<Triple> res = new ArrayList<Triple>();
 		for (Triple t : dbTriple) {
 			if (t.getSource().getId() == kObject.getId() || t.getLink().getId() == kObject.getId() || t.getDestination().getId() == kObject.getId()) res.add(t);
 		}
 		return res;
+	}
+
+	public ArrayList<Triple> setRelation_symmetric(String relation) {
+		ArrayList<Triple> res = new ArrayList<Triple>();
+		boolean found = false;
+		KRelation kr = null;
+		for (KObject ko : dbKObject) {
+			if (ko.getId() == relation) {
+				found = true;
+				kr = (KRelation) ko;
+			}
+		}
+		if (!found) {
+			kr = new KRelation(relation);
+			kr.setSymmetric(true);
+			dbKObject.add(kr);
+		} else {
+			ArrayList<Triple> triples = findEveryTripleWith(kr);
+			Triple tmp;
+			for (Triple triple : triples) {
+				tmp = kr.symmetric(triple);
+				if (!dbTriple.contains(tmp)) res.add(tmp);
+			}
+		}
+		return res;
+	}
+
+	public void setRelation_transitive(String string) {
+		// TODO Auto-generated method stub
+		
 	}
 }

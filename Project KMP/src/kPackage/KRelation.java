@@ -97,6 +97,10 @@ public class KRelation extends KObject {
 		return res;
 	}
 	
+	public Triple symmetric(Triple t) {
+		return new Triple(t.getDestination(), this, t.getSource());
+	}
+	
 	// /!\ for xRy -> add xRx and yRy 
 	public ArrayList<Triple> reflexive(ArrayList<KModel> as, ArrayList<KModel> bs) {
 		ArrayList<Triple> res =  new ArrayList<Triple>();

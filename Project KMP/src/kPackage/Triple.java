@@ -54,6 +54,6 @@ public class Triple implements Serializable {
 		//res.addAll(this.source.applyProperties());
 		//res.addAll(this.destination.applyProperties());
 		res.addAll(this.link.applyPropertiesRelation(db));
-		return null;
+		return res;
 	}	
 }
