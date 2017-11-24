@@ -62,10 +62,10 @@ public class StringProcessor {
 	}
 
 	/**
-	 * Offers suggestions as to what the user may want to say according to submitted
-	 * tokens.
+	 * Offers suggestions as to what the user may want to say according to
+	 * submitted tokens.
 	 * 
-	 * @param tokens
+	 * @param tokens An array of strings
 	 */
 	private void suggest(String[] tokens) {
 		for (String[] pattern : patterns) {
@@ -77,6 +77,13 @@ public class StringProcessor {
 		}
 	}
 
+	/**
+	 * Recursive function used in building a database triple.
+	 * 
+	 * @param tokens
+	 *            An array of strings
+	 * @return An instance of KRelation
+	 */
 	private KRelation buildKRelation(String[] tokens) {
 		if (tokens.length > 1) {
 			KRelation leftLink = new KRelation(tokens[0]);
@@ -88,6 +95,13 @@ public class StringProcessor {
 		return new KRelation(tokens[0]);
 	}
 
+	/**
+	 * Recursive function used in building a database triple.
+	 * 
+	 * @param tokens
+	 *            An array of strings
+	 * @return An instance of KModel
+	 */
 	private KModel buildKCompositeModel(String[] tokens) {
 		if (tokens.length > 1) {
 			KModel source = new KModel(tokens[0]);
@@ -99,6 +113,14 @@ public class StringProcessor {
 		return new KModel(tokens[0]);
 	}
 
+	/**
+	 * Constructs a database triple whose contents depend on the structure of
+	 * tokens submitted by the user.
+	 * 
+	 * @param tokens
+	 *            An array of strings
+	 * @return An instance of Triple
+	 */
 	private Triple buildTriple(String[] tokens) {
 		KCompositeModel temp = (KCompositeModel) buildKCompositeModel(tokens);
 		return new Triple(temp.getSource(), temp.getLink(), temp.getDestination());
@@ -172,72 +194,150 @@ public class StringProcessor {
 		// Send it off to the database for validation and CRUD operations
 	}
 
+	/**
+	 * Tells the database that first and second token are two different
+	 * relations. This is the default behavior for any two relations.
+	 * 
+	 * @param first
+	 *            A string representing a KRelation
+	 * @param second
+	 *            A string representing a KRelation
+	 */
 	private void seperateRelations(String first, String second) {
 		// TODO Auto-generated method stub
-		
-	}
 
-	private void establishRelationInheritance(String first, String second) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void establishRelationEquivalence(String first, String second) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void seperateInstances(String first, String second) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void establishInstanceEquivalence(String first, String second) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void seperateClasses(String first, String second) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void establishClassInheritance(String first, String second) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void establishClassEquivalence(String first, String second) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	/**
-	 * Tells the database that the first token is to be recognised as an instance of
+	 * Tells the database that the first token now inherits the properties of
 	 * the second token.
 	 * 
 	 * @param first
+	 *            A string representing a KRelation
 	 * @param second
+	 *            A string representing a KRelation
+	 */
+	private void establishRelationInheritance(String first, String second) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * Tells the database that the first and second token are the same relation.
+	 * 
+	 * @param first
+	 *            A string representing a KRelation
+	 * @param second
+	 *            A string representing a KRelation
+	 */
+	private void establishRelationEquivalence(String first, String second) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * Tells the database that the first and second token are different
+	 * instances. This is the default behavior for any two instances.
+	 * 
+	 * @param first
+	 *            A string representing a KInstance
+	 * @param second
+	 *            A string representing a KInstance
+	 */
+	private void seperateInstances(String first, String second) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * Tells the database that the first and second tokens are the same
+	 * instance.
+	 * 
+	 * @param first
+	 *            A string representing a KInstance
+	 * @param second
+	 *            A string representing a KInstance
+	 */
+	private void establishInstanceEquivalence(String first, String second) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * Tells the database that the first and second tokens are different and do
+	 * not share any common properties or instances. This is the default
+	 * behavior for any two classes.
+	 * 
+	 * @param first
+	 *            A string representing a KClass
+	 * @param second
+	 *            A string representing a KClass
+	 */
+	private void seperateClasses(String first, String second) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * Tells the database to assign an inheritance relation between the first
+	 * and the second token.
+	 * 
+	 * @param first
+	 *            A string representing a KClass
+	 * @param second
+	 *            A string representing a KClass
+	 */
+	private void establishClassInheritance(String first, String second) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * Tells the database that the first token is an equivalent class to the
+	 * second token.
+	 * 
+	 * @param first
+	 *            A string representing a KClass
+	 * @param second
+	 *            A string representing a KClass
+	 */
+	private void establishClassEquivalence(String first, String second) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * Tells the database that the first token is now (if not currently) to be
+	 * recognized as an instance of the second token.
+	 * 
+	 * @param first
+	 *            A string representing a KModel
+	 * @param second
+	 *            A string representing a KModel
 	 */
 	private void defineInstanceOfClass(String first, String second) {
 		// TODO
 	}
 
 	/**
-	 * Tells the database that the first token is to be recognised as a class whose
-	 * instances include the second token.
+	 * Tells the database that the first token is to be recognised as a class
+	 * whose instances include the second token.
 	 * 
 	 * @param first
+	 *            A string representing a KModel
 	 * @param second
+	 *            A string representing a KModel
 	 */
 	private void addInstanceToClass(String first, String second) {
 		// TODO Auto-generated method stub
 	}
 
 	/**
-	 * Reads and displays information from database according to submitted tokens.
+	 * Reads and displays information from database according to submitted
+	 * tokens.
 	 * 
 	 * @param tokens
+	 *            The tokens from which information is displayed.
 	 */
 	private void display(String[] tokens) {
 		// TODO Auto-generated method stub

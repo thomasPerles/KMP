@@ -23,9 +23,11 @@ public class KClass extends KModel {
 	public String toString() {
 		StringBuffer res = new StringBuffer();
 		res.append('\n').append(simpleToString()).append(" is a class");
-		res.append("\nhas instances :");
-		for(KInstance instance : instances) {
-			res.append("\n\t").append(instance.simpleToString());
+		if (instances.size() > 0) {
+			res.append("\nhas instances :");
+			for (KInstance instance : instances) {
+				res.append("\n\t").append(instance.simpleToString());
+			} 
 		}
 		return res.toString();
 	}

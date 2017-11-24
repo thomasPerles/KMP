@@ -17,7 +17,9 @@ public class KInstance extends KModel {
 	public String toString() {
 		StringBuilder res = new StringBuilder();
 		res.append('\n').append(simpleToString()).append(" is an instance");
-		res.append("\nis instance of ").append(kClass.simpleToString());
+		if (kClass != null) {
+			res.append("\nis instance of ").append(kClass.simpleToString());
+		}
 		return res.toString();
 	}
 	
