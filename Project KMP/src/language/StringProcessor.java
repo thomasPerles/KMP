@@ -69,7 +69,8 @@ public class StringProcessor {
 	 * Offers suggestions as to what the user may want to say according to
 	 * submitted tokens.
 	 * 
-	 * @param tokens An array of strings
+	 * @param tokens
+	 *            An array of strings
 	 */
 	private void suggest(String[] tokens) {
 		for (String[] pattern : patterns) {
@@ -141,17 +142,15 @@ public class StringProcessor {
 	 */
 	public void process(String[] tokens) throws IllegalWordCountException {
 
-		/*
-		 * if(tokens.length % 2 != 1) { throw new IllegalWordCountException(); }
-		 */
+		if (tokens.length % 2 != 1 && tokens.length != 2) {
+			throw new IllegalWordCountException();
+		}
 
 		// keyword identification
-		
-		int position = 1;
-		
+
 		for (String token : tokens) {
 			boolean keywordFound = false;
-			
+
 			switch (token) {
 			case "has":
 				addInstanceToClass(tokens[0], tokens[2]);
@@ -183,6 +182,8 @@ public class StringProcessor {
 			case "differentR":
 				seperateRelations(tokens[0], tokens[2]);
 				break;
+			case "isR":
+				updateRelation(tokens[0], tokens[2]);
 			case "help":
 				suggest(tokens);
 				break;
@@ -191,12 +192,28 @@ public class StringProcessor {
 				break;
 			}
 
+			if (token.charAt(0) == '?') {
+				// db.request(tokens);
+			}
 			if (keywordFound)
 				return;
 		}
 
 		// Send it off to the database for validation and CRUD operations
-		db.newStatement(tokens);
+		// db.newStatement(tokens);
+	}
+
+	/**
+	 * Tells the database to update the relation's qualifier status.
+	 * 
+	 * @param relation
+	 *            A string representing a KRelation
+	 * @param qualifier
+	 *            A string representing a qualifier
+	 */
+	private void updateRelation(String relation, String qualifier) {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
