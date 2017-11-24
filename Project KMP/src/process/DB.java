@@ -308,8 +308,32 @@ public class DB implements Serializable {
 		return res;
 	}
 
-	public void setRelation_transitive(String string) {
-		// TODO Auto-generated method stub
-		
+	public ArrayList<Triple> setRelation_transitive(String string) {
+		ArrayList<Triple> res = new ArrayList<Triple>();
+		boolean found = false;
+		KRelation kr = null;
+		for (KObject ko : dbKObject) {
+			if (ko.getId() == string) {
+				found = true;
+				kr = (KRelation) ko;
+			}
+		}
+		if (!found) {
+			kr = new KRelation(string);
+			kr.setTransitive(true);
+			dbKObject.add(kr);
+		} else {
+			ArrayList<Triple> triples = findEveryTripleWith(kr);
+			Triple tmp;
+			if (triples.size() > 1) {
+				for (int i = 0; i < triples.size(); i++) {
+					for (int j = i+1; j < triples.size(); j++) {
+						tmp = kr.transitive(triples.get(i), triples.get(j));
+						if (!dbTriple.contains(tmp)) res.add(tmp);
+					}
+				}
+			}
+		}
+		return res;
 	}
 }

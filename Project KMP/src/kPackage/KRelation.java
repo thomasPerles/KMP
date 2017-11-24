@@ -130,6 +130,16 @@ public class KRelation extends KObject {
 		return res;
 	}
 	
+	public Triple transitive(Triple t1, Triple t2) {
+		Triple res = null;
+		KModel t1s = t1.getSource(), t1d = t1.getDestination(), t2s = t2.getSource(), t2d = t2.getDestination();
+		if (t1s == t2s) res = new Triple(t1d, this, t2d);
+		if (t1s == t2d) res = new Triple(t1d, this, t2s);
+		if (t1d == t2s) res = new Triple(t1s, this, t2d);
+		if (t1d == t2d) res = new Triple(t1s, this, t2s);
+		return res;
+	}
+	
 	public boolean hasProperty() {
 		return symmetric || transitive || reflexive || functional || inverseFunctional;
 	}

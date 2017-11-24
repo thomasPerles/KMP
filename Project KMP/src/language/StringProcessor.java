@@ -88,6 +88,19 @@ public class StringProcessor {
 		}
 	}
 
+	
+	
+	
+	
+	
+	//TODO suppress build methods ?
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Recursive function used in building a database triple.
 	 * 
