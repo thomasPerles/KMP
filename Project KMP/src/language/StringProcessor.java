@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -183,7 +185,11 @@ public class StringProcessor {
 				seperateRelations(tokens[0], tokens[2]);
 				break;
 			case "isR":
-				updateRelation(tokens[0], tokens[2]);
+				try {
+					updateRelation(tokens[0], tokens[2]);
+				} catch (IllegalTokenException e) {
+					e.printStackTrace();
+				}
 			case "help":
 				suggest(tokens);
 				break;
@@ -210,10 +216,33 @@ public class StringProcessor {
 	 *            A string representing a KRelation
 	 * @param qualifier
 	 *            A string representing a qualifier
+	 * @throws IllegalTokenException
+	 *             - if the qualifier token is not recognized
 	 */
-	private void updateRelation(String relation, String qualifier) {
+	private void updateRelation(String relation, String qualifier) throws IllegalTokenException {
 		// TODO Auto-generated method stub
-
+		for (String[] phrase : patterns) {
+			if (Arrays.asList(phrase).contains(qualifier)) {
+				Class[] params = new Class[1];
+				params[0] = String.class;
+				try {
+					Method changeQualifierMethod = db.getClass().getMethod("setRelation_" + qualifier, params);
+					changeQualifierMethod.invoke(db, relation);
+				} catch (NoSuchMethodException e) {
+					e.printStackTrace();
+				} catch (SecurityException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
+				return;
+			}
+		}
+		throw new IllegalTokenException(qualifier);
 	}
 
 	/**
