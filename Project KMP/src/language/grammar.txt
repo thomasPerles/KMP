@@ -21,7 +21,7 @@ Instance 			= instance equivalentI instance
 Relation			= relation equivalentR relation
 					| relation inheritsR relation
 					| relation differentR relation
-					| relation isR symetric
+					| relation isR symmetric
 					| relation isR reflexive
 					| relation isR functional
 					| relation isR inverseFunctional
