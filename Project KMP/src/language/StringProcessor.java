@@ -8,11 +8,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+
 import kPackage.KCompositeModel;
 import kPackage.KCompositeRelation;
 import kPackage.KModel;
 import kPackage.KRelation;
 import kPackage.Triple;
+import process.DB;
 import terminal.Terminal;
 
 public class StringProcessor {
@@ -20,10 +22,12 @@ public class StringProcessor {
 	private ResourceBundle bundle;
 	private Terminal terminal;
 	private ArrayList<String[]> patterns;
+	private DB db;
 
 	public StringProcessor(ResourceBundle bundle) {
 		this.bundle = bundle;
 		this.patterns = new ArrayList<String[]>();
+		this.db = new DB();
 		loadGrammar();
 	}
 
@@ -84,7 +88,7 @@ public class StringProcessor {
 	 *            An array of strings
 	 * @return An instance of KRelation
 	 */
-	private KRelation buildKRelation(String[] tokens) {
+	private KRelation buildKCompositeRelation(String[] tokens) {
 		if (tokens.length > 1) {
 			KRelation leftLink = new KRelation(tokens[0]);
 			KRelation rightLink = new KRelation(tokens[tokens.length - 1]);
@@ -107,7 +111,7 @@ public class StringProcessor {
 			KModel source = new KModel(tokens[0]);
 			KModel destination = new KModel(tokens[tokens.length - 1]);
 			tokens = Arrays.copyOfRange(tokens, 1, tokens.length - 1);
-			KRelation link = buildKRelation(tokens);
+			KRelation link = buildKCompositeRelation(tokens);
 			return new KCompositeModel(source, link, destination);
 		}
 		return new KModel(tokens[0]);
@@ -142,8 +146,12 @@ public class StringProcessor {
 		 */
 
 		// keyword identification
+		
+		int position = 1;
+		
 		for (String token : tokens) {
 			boolean keywordFound = false;
+			
 			switch (token) {
 			case "has":
 				addInstanceToClass(tokens[0], tokens[2]);
@@ -187,11 +195,8 @@ public class StringProcessor {
 				return;
 		}
 
-		// If no keywords are found
-		Triple triple = buildTriple(tokens);
-		terminal.println(triple.toString());
-
 		// Send it off to the database for validation and CRUD operations
+		db.newStatement(tokens);
 	}
 
 	/**
