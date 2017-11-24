@@ -2,7 +2,12 @@ package process;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import kPackage.KClass;
+import kPackage.KCompositeModel;
+import kPackage.KCompositeRelation;
+import kPackage.KInstance;
 import kPackage.KModel;
 import kPackage.KObject;
 import kPackage.KRelation;
@@ -15,7 +20,7 @@ public class DB implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Triple> dbTriple = new ArrayList<Triple>();
-	private ArrayList<KObject> dbKoject = new ArrayList<KObject>();
+	private ArrayList<KObject> dbKObject = new ArrayList<KObject>();
 	
 	public DB() {
 		this.dbTriple = new ArrayList<Triple>();
@@ -115,74 +120,141 @@ public class DB implements Serializable {
 	
 	
 	
+	public ArrayList<Triple> getDBTriple() {
+		return dbTriple;
+	}
+
+	public ArrayList<KObject> getDBKObject() {
+		return dbKObject;
+	}
+
 	public void newStatement(String[] words) {
-		for (int i = 0; i < words.length; i++) {
-			if (!dbKoject.contains(words[i])) {
-				if (i % 2 == 0) dbKoject.add(new KModel (words[i]));
-				else dbKoject.add(new KRelation (words[i]));
+		Triple triple = buildTriple(words);
+		if (!dbTriple.contains(triple)) dbTriple.add(triple);
+		addListTripleToDBTriple(checkProperties(triple));
+	}
+	
+	/**
+	 * Constructs a database triple whose contents depend on the structure of
+	 * tokens submitted by the user.
+	 * 
+	 * @param tokens
+	 *            An array of strings
+	 * @return An instance of Triple
+	 */
+	private Triple buildTriple(String[] tokens) {
+		KCompositeModel temp = (KCompositeModel) buildKCompositeModel(tokens);
+		return new Triple(temp.getSource(), temp.getLink(), temp.getDestination());
+	}
+	
+	/**
+	 * Recursive function used in building a database triple.
+	 * 
+	 * @param tokens
+	 *            An array of strings
+	 * @return An instance of KModel
+	 */
+	private KModel buildKCompositeModel(String[] tokens) {
+		if (tokens.length > 1) {
+			KModel source = new KModel(tokens[0]);
+			if (!dbKObject.contains(source)) dbKObject.add(source);
+			KModel destination = new KModel(tokens[tokens.length - 1]);
+			if (!dbKObject.contains(destination)) dbKObject.add(destination);
+			tokens = Arrays.copyOfRange(tokens, 1, tokens.length - 1);
+			KRelation link = buildKCompositeRelation(tokens);
+			return new KCompositeModel(source, link, destination);
+		}
+		
+		for(KObject ko : dbKObject) {
+			if (ko.getId().equals(tokens[0]))
+				if (ko instanceof KClass)
+					return (KClass) ko;
+				if (ko instanceof KObject)
+					return (KInstance) ko;
+				if (ko instanceof KModel)
+					return (KModel) ko;
+		}
+		
+		KModel kModel = new KModel(tokens[0]);
+		if (!dbKObject.contains(kModel)) dbKObject.add(kModel);
+		return kModel;
+	}
+	
+	/**
+	 * Recursive function used in building a database triple.
+	 * 
+	 * @param tokens
+	 *            An array of strings
+	 * @return An instance of KRelation
+	 */
+	private KRelation buildKCompositeRelation(String[] tokens) {
+		if (tokens.length > 1) {
+			KRelation leftLink = new KRelation(tokens[0]);
+			if (!dbKObject.contains(leftLink)) dbKObject.add(leftLink);
+			KRelation rightLink = new KRelation(tokens[tokens.length - 1]);
+			if (!dbKObject.contains(rightLink)) dbKObject.add(rightLink);
+			tokens = Arrays.copyOfRange(tokens, 1, tokens.length - 1);
+			KModel model = buildKCompositeModel(tokens);
+			return new KCompositeRelation(leftLink, model, rightLink);
+		}
+		
+		for(KObject ko : dbKObject) {
+			if(ko.getId().equals(tokens[0])) {
+				if(ko instanceof KRelation)
+					return (KRelation) ko;
 			}
 		}
-		/*
-		analyser le triple
-		-insertion de KObject
-		-insertion des triples
-		verification db
-		-verification de kr, kc, ki
-		-ajout de nouveaux triples
-		*/
-		//TODO
-		//cf StringProcessor : build Triple, KCompositeRelation, KCompositeModel
-		/**
-		 * Recursive function used in building a database triple.
-		 * 
-		 * @param tokens
-		 *            An array of strings
-		 * @return An instance of KRelation
-		 */
-		/*
-		private KRelation buildKCompositeRelation(String[] tokens) {
-			if (tokens.length > 1) {
-				KRelation leftLink = new KRelation(tokens[0]);
-				KRelation rightLink = new KRelation(tokens[tokens.length - 1]);
-				tokens = Arrays.copyOfRange(tokens, 1, tokens.length - 1);
-				KModel model = buildKCompositeModel(tokens);
-				return new KCompositeRelation(leftLink, model, rightLink);
-			}
-			return new KRelation(tokens[0]);
-		}*/
+		KRelation kRelation = new KRelation(tokens[0]);
+		if (!dbKObject.contains(kRelation)) dbKObject.add(kRelation);
+		return kRelation;
+	}
+	
+	public ArrayList<Triple> checkProperties(Triple triple) {
+		ArrayList<Triple> triples = explodeTriple(triple), result = new ArrayList<Triple>();
+		for (Triple t : triples) result.addAll(t.applyPropertiesTriple(this));
+		return result;
+	}
+	
+	public ArrayList<Triple> explodeTriple(Triple triple) {
+		ArrayList<Triple> res = new ArrayList<Triple>();
+		ArrayList<KObject> kObjects = getKObjectsOfTriple(triple);
+		for (int i = 0; i < kObjects.size()-1; i=+2) {
+			res.add(new Triple((KModel) kObjects.get(i), (KRelation) kObjects.get(i+1), (KModel) kObjects.get(i+2)));
+		}
+		return res;
+	}
+	
+	private ArrayList<KObject> getKObjectsOfTriple(Triple triple) {
+		ArrayList<KObject> res = new ArrayList<KObject>();
+		res.add(triple.getSource());
+		if (triple.getLink() instanceof KCompositeRelation) res.addAll(getKObjectsOfKCompositeRelation((KCompositeRelation) triple.getLink()));
+		else res.add(triple.getLink());
+		res.add(triple.getDestination());
+		return res;
+	}
 
-		/**
-		 * Recursive function used in building a database triple.
-		 * 
-		 * @param tokens
-		 *            An array of strings
-		 * @return An instance of KModel
-		 */
-		/*
-		private KModel buildKCompositeModel(String[] tokens) {
-			if (tokens.length > 1) {
-				KModel source = new KModel(tokens[0]);
-				KModel destination = new KModel(tokens[tokens.length - 1]);
-				tokens = Arrays.copyOfRange(tokens, 1, tokens.length - 1);
-				KRelation link = buildKCompositeRelation(tokens);
-				return new KCompositeModel(source, link, destination);
-			}
-			return new KModel(tokens[0]);
-		}*/
+	private ArrayList<KObject> getKObjectsOfKCompositeRelation(KCompositeRelation kcr) {
+		ArrayList<KObject> res = new ArrayList<KObject>();
+		res.add(kcr.getLeftLink());
+		if (kcr.getModel() instanceof KCompositeModel) res.addAll(getKObjectsOfKCompositeModel((KCompositeModel) kcr.getModel()));
+		else res.add(kcr.getModel());
+		res.add(kcr.getRightLink());
+		return res;
+	}
 
-		/**
-		 * Constructs a database triple whose contents depend on the structure of
-		 * tokens submitted by the user.
-		 * 
-		 * @param tokens
-		 *            An array of strings
-		 * @return An instance of Triple
-		 */
-		/*
-		private Triple buildTriple(String[] tokens) {
-			KCompositeModel temp = (KCompositeModel) buildKCompositeModel(tokens);
-			return new Triple(temp.getSource(), temp.getLink(), temp.getDestination());
-		}*/
+	private ArrayList<KObject> getKObjectsOfKCompositeModel(KCompositeModel kcm) {
+		ArrayList<KObject> res = new ArrayList<KObject>();
+		res.add(kcm.getSource());
+		if (kcm.getLink() instanceof KCompositeRelation) res.addAll(getKObjectsOfKCompositeRelation((KCompositeRelation) kcm.getLink()));
+		else res.add(kcm.getLink());
+		res.add(kcm.getDestination());
+		return res;
+	}
+
+	public void addListTripleToDBTriple(ArrayList<Triple> arr) {
+		for (Triple triple : arr) {
+			if (!dbTriple.contains(triple)) dbTriple.add(triple);
+		}
 	}
 	
 	public Context request(String[] words) {
@@ -201,5 +273,18 @@ public class DB implements Serializable {
 	
 	public void define() {
 		//TODO
+	}
+	
+	public ArrayList<Triple> setRelation_symmetric(String relation) {
+		//TODO
+		return null;
+	}
+
+	public ArrayList<Triple> findEveryTripleWith(KObject kObject) {
+		ArrayList<Triple> res = new ArrayList<Triple>();
+		for (Triple t : dbTriple) {
+			if (t.getSource().getId() == kObject.getId() || t.getLink().getId() == kObject.getId() || t.getDestination().getId() == kObject.getId()) res.add(t);
+		}
+		return res;
 	}
 }

@@ -1,5 +1,7 @@
 package test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ResourceBundle;
 
 import org.junit.Before;
@@ -24,7 +26,7 @@ public class TestRunner {
 	public void newStatementTest() {
 		db.setRelation_symmetric("isMarried");
 		db.newStatement(new String[]{"Laurent", "isMarried", "Sophie"});
-		assertTrue(db.getDBKObject().size == 3 && db.getDBTriple().size == 2);
+		assertTrue(db.getDBKObject().size() == 3 && db.getDBTriple().size() == 2);
 	}
 
 }

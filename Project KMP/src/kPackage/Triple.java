@@ -1,6 +1,9 @@
 package kPackage;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+
+import process.DB;
 
 public class Triple implements Serializable {
 	
@@ -45,5 +48,12 @@ public class Triple implements Serializable {
 		Triple triple = (Triple) obj;
 		return this.source.equals(triple.source) && this.link.equals(triple.link) && this.destination.equals(triple.destination);
 	}
-	
+
+	public ArrayList<Triple> applyPropertiesTriple(DB db) {
+		ArrayList<Triple> res = new ArrayList<Triple>();
+		//res.addAll(this.source.applyProperties());
+		//res.addAll(this.destination.applyProperties());
+		res.addAll(this.link.applyPropertiesRelation(db));
+		return null;
+	}	
 }

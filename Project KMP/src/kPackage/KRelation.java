@@ -2,13 +2,13 @@ package kPackage;
 
 import java.util.ArrayList;
 
+import process.DB;
+
 public class KRelation extends KObject {
 
 	private KClass domain = null, range = null;
 	
-	public KRelation() {
-		
-	}
+	public KRelation() {}
 	
 	public KRelation(String id) {
 		this.id = id;
@@ -38,16 +38,23 @@ public class KRelation extends KObject {
 	}
 
 	
-	private boolean symetric = false, reflexive = false, functional, inverseFunctional, transitive = false;
-	//symetric = false means asymetric
+	
+	
+	
+	
+	
+	
+	
+	private boolean symmetric = false, reflexive = false, functional, inverseFunctional, transitive = false;
+	//symmetric = false means asymmetric
 	//reflexive = false means irreflexive
 
-	public boolean isSymetric() {
-		return symetric;
+	public boolean isSymmetric() {
+		return symmetric;
 	}
 
-	public void setSymetric(boolean symetric) {
-		this.symetric = symetric;
+	public void setSymmetric(boolean symmetric) {
+		this.symmetric = symmetric;
 	}
 
 	public boolean isReflexive() {
@@ -82,7 +89,7 @@ public class KRelation extends KObject {
 		this.transitive = transitive;
 	}
 	
-	public ArrayList<Triple> symetric(ArrayList<KModel> as, ArrayList<KModel> bs) {
+	public ArrayList<Triple> symmetric(ArrayList<KModel> as, ArrayList<KModel> bs) {
 		ArrayList<Triple> res =  new ArrayList<Triple>();
 		for (int i = 0; i < as.size(); i++) {
 			res.add(new Triple(bs.get(i), this, as.get(i)));
@@ -120,12 +127,12 @@ public class KRelation extends KObject {
 	}
 	
 	public boolean hasProperty() {
-		return symetric || transitive || reflexive || functional || inverseFunctional;
+		return symmetric || transitive || reflexive || functional || inverseFunctional;
 	}
 	
 	public ArrayList<Triple> applyProperties(ArrayList<KModel> as, ArrayList<KModel> bs) {
 		ArrayList<Triple> res =  new ArrayList<Triple>();
-		if (isSymetric()) res.addAll(symetric(as, bs));
+		if (isSymmetric()) res.addAll(symmetric(as, bs));
 		if (isReflexive()) res.addAll(reflexive(as, bs));
 		/*
 		if (isFunctional()) res.add(functional(a, b));
@@ -144,19 +151,19 @@ public class KRelation extends KObject {
 	
 	public ArrayList<Triple> equivalentR(ArrayList<KModel> as) {
 		ArrayList<Triple> res =  new ArrayList<Triple>();
-		
+		//TODO
 		return res;
 	}
 	
 	public ArrayList<Triple> inheritsR(ArrayList<KModel> as) {
 		ArrayList<Triple> res =  new ArrayList<Triple>();
-		
+		//TODO
 		return res;
 	}
 	
 	public ArrayList<Triple> differentR(ArrayList<KModel> as) {
 		ArrayList<Triple> res =  new ArrayList<Triple>();
-		
+		//TODO
 		return res;
 	}
 
@@ -165,6 +172,19 @@ public class KRelation extends KObject {
 		if (!equivalentR.isEmpty()) res.addAll(equivalentR(as));
 		if (!inheritsR.isEmpty()) res.addAll(inheritsR(as));
 		if (!differentR.isEmpty()) res.addAll(differentR(as));
+		return res;
+	}
+	
+	public ArrayList<Triple> applyPropertiesRelation(DB db) {
+		ArrayList<Triple> res = new ArrayList<Triple>();
+		ArrayList<KModel> domains = new ArrayList<KModel>(), ranges = new ArrayList<KModel>();
+		ArrayList<Triple> ts = db.findEveryTripleWith(this);
+		for (Triple t : ts) {
+			domains.add(t.getSource());
+			ranges.add(t.getDestination());
+		}
+		res.addAll(applyProperties(domains, ranges));
+		res.addAll(applyPropertiesOnRelation(domains, ranges));
 		return res;
 	}
 }
