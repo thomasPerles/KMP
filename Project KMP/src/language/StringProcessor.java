@@ -28,7 +28,7 @@ public class StringProcessor {
 	}
 
 	/**
-	 * Loads internal grammar used by KMP. The grammar is (should) be EBNF
+	 * Loads internal grammar used by KMP. The grammar is (should be) EBNF
 	 * compliant.
 	 */
 	private void loadGrammar() {
