@@ -32,6 +32,10 @@ public class StringProcessor {
 		this.db = new DB();
 		loadGrammar();
 	}
+	
+	public void setDB(DB db) {
+		this.db = db;
+	}
 
 	/**
 	 * Loads internal grammar used by KMP. The grammar is (should be) EBNF
