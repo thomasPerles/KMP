@@ -175,14 +175,14 @@ public class DB implements Serializable {
 			return new KCompositeModel(source, link, destination);
 		}
 		
-		for(KObject ko : dbKObject) {
-			if (ko.getId().equals(tokens[0]))
-				if (ko instanceof KClass)
-					return (KClass) ko;
-				if (ko instanceof KObject)
-					return (KInstance) ko;
-				if (ko instanceof KModel)
-					return (KModel) ko;
+		for(KObject kObject : dbKObject) {
+			if (kObject.getId().equals(tokens[0]))
+				if (kObject instanceof KClass)
+					return (KClass) kObject;
+				if (kObject instanceof KObject)
+					return (KInstance) kObject;
+				if (kObject instanceof KModel)
+					return (KModel) kObject;
 		}
 		
 		KModel kModel = new KModel(tokens[0]);
@@ -208,10 +208,10 @@ public class DB implements Serializable {
 			return new KCompositeRelation(leftLink, model, rightLink);
 		}
 		
-		for(KObject ko : dbKObject) {
-			if(ko.getId().equals(tokens[0])) {
-				if(ko instanceof KRelation)
-					return (KRelation) ko;
+		for(KObject kObject : dbKObject) {
+			if(kObject.getId().equals(tokens[0])) {
+				if(kObject instanceof KRelation)
+					return (KRelation) kObject;
 			}
 		}
 		KRelation kRelation = new KRelation(tokens[0]);
@@ -227,9 +227,9 @@ public class DB implements Serializable {
 	 * @return
 	 */
 	public ArrayList<Triple> checkProperties(Triple triple) {
-		ArrayList<Triple> triples = explodeTriple(triple), result = new ArrayList<Triple>();
-		for (Triple t : triples) result.addAll(t.applyPropertiesTriple(this));
-		return result;
+		ArrayList<Triple> triples = explodeTriple(triple), res = new ArrayList<Triple>();
+		for (Triple t : triples) res.addAll(t.applyPropertiesTriple(this));
+		return res;
 	}
 	
 	/**
@@ -330,7 +330,7 @@ public class DB implements Serializable {
 	public ArrayList<Triple> findEveryTripleWith(KObject kObject) {
 		ArrayList<Triple> res = new ArrayList<Triple>();
 		for (Triple t : dbTriple) {
-			if (t.getSource().getId() == kObject.getId() || t.getLink().getId() == kObject.getId() || t.getDestination().getId() == kObject.getId()) res.add(t);
+			if (t.getSource().equals(kObject) || t.getLink().equals(kObject) || t.getDestination().equals(kObject)) res.add(t);
 		}
 		return res;
 	}
@@ -347,23 +347,23 @@ public class DB implements Serializable {
 	public ArrayList<Triple> setRelation_symmetric(String relation) {
 		ArrayList<Triple> res = new ArrayList<Triple>();
 		boolean found = false;
-		KRelation kr = null;
-		for (KObject ko : dbKObject) {
-			if (ko.getId() == relation) {
+		KRelation kRelation = null;
+		for (KObject kObject : dbKObject) {
+			if (kObject.getId() == relation) {
 				found = true;
-				kr = (KRelation) ko;
-				kr.setSymmetric(true);
+				kRelation = (KRelation) kObject;
+				kRelation.setSymmetric(true);
 			}
 		}
 		if (!found) {
-			kr = new KRelation(relation);
-			kr.setSymmetric(true);
-			dbKObject.add(kr);
+			kRelation = new KRelation(relation);
+			kRelation.setSymmetric(true);
+			dbKObject.add(kRelation);
 		} else {
-			ArrayList<Triple> triples = findEveryTripleWith(kr);
+			ArrayList<Triple> triples = findEveryTripleWith(kRelation);
 			Triple tmp;
 			for (Triple triple : triples) {
-				tmp = kr.symmetric(triple);
+				tmp = kRelation.symmetric(triple);
 				if (!dbTriple.contains(tmp)) res.add(tmp);
 			}
 		}
@@ -383,30 +383,31 @@ public class DB implements Serializable {
 	public ArrayList<Triple> setRelation_transitive(String string) {
 		ArrayList<Triple> res = new ArrayList<Triple>();
 		boolean found = false;
-		KRelation kr = null;
-		for (KObject ko : dbKObject) {
-			if (ko.getId() == string) {
+		KRelation kRelation = null;
+		for (KObject kObject : dbKObject) {
+			if (kObject.getId() == string) {
 				found = true;
-				kr = (KRelation) ko;
-				kr.setTransitive(true);
+				kRelation = (KRelation) kObject;
+				kRelation.setTransitive(true);
 			}
 		}
 		if (!found) {
-			kr = new KRelation(string);
-			kr.setTransitive(true);
-			dbKObject.add(kr);
+			kRelation = new KRelation(string);
+			kRelation.setTransitive(true);
+			dbKObject.add(kRelation);
 		} else {
-			ArrayList<Triple> triples = findEveryTripleWith(kr);
+			ArrayList<Triple> triples = findEveryTripleWith(kRelation);
 			Triple tmp;
 			if (triples.size() > 1) {
 				for (int i = 0; i < triples.size(); i++) {
 					for (int j = i+1; j < triples.size(); j++) {
-						tmp = kr.transitive(triples.get(i), triples.get(j));
+						tmp = kRelation.transitive(triples.get(i), triples.get(j));
 						if (!dbTriple.contains(tmp)) res.add(tmp);
 					}
 				}
 			}
 		}
+		addListTripleToDBTriple(res);
 		return res;
 	}
 }

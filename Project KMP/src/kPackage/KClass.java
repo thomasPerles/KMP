@@ -19,17 +19,22 @@ public class KClass extends KModel {
 		return this.instances.contains(instance);
 	}
 	
+//	@Override
+//	public String toString() {
+//		StringBuffer res = new StringBuffer();
+//		res.append('\n').append(simpleToString()).append(" is a class");
+//		if (instances.size() > 0) {
+//			res.append("\nhas instances :");
+//			for (KInstance instance : instances) {
+//				res.append("\n\t").append(instance.simpleToString());
+//			} 
+//		}
+//		return res.toString();
+//	}
+	
 	@Override
 	public String toString() {
-		StringBuffer res = new StringBuffer();
-		res.append('\n').append(simpleToString()).append(" is a class");
-		if (instances.size() > 0) {
-			res.append("\nhas instances :");
-			for (KInstance instance : instances) {
-				res.append("\n\t").append(instance.simpleToString());
-			} 
-		}
-		return res.toString();
+		return id;
 	}
 
 	@Override

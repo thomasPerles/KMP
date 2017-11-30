@@ -19,9 +19,10 @@ public class Triple implements Serializable {
 
 	@Override
 	public String toString() {
-		StringBuilder res = new StringBuilder();
-		res.append("\n(").append(source.simpleToString()).append(' ').append(link.simpleToString()).append(' ').append(destination.simpleToString()).append(')');
-		return res.toString();
+//		StringBuilder res = new StringBuilder();
+//		res.append("\n(").append(source.simpleToString()).append(' ').append(link.simpleToString()).append(' ').append(destination.simpleToString()).append(')');
+//		return res.toString();
+		return "(" + source + "," + link + "," + destination + ")";
 	}
 
 	public KModel getSource() {

@@ -52,23 +52,23 @@ public class TestRunner {
 		assertEquals(4, db.getDBTriple().size());
 	}
 
-	 @Test
-	 public void transitiveTest() {
-	 db.setRelation_transitive("hasSibling");
-	 db.newStatement(new String[] {"Alice", "hasSibling", "Bob"});
-	 assertEquals(3, db.getDBKObject().size());
-	 assertEquals(1, db.getDBTriple().size());
-	 db.newStatement(new String[] {"Bob", "hasSibling", "Charles"});
-	 assertEquals(4, db.getDBKObject().size());
-	 assertEquals(3, db.getDBTriple().size());
-	 /*
-	 * ["Alice", "hasSibling", "Bob"]
-	 * ["Alice", "hasSibling", "Charles"]
-	 * ["Bob", "hasSibling", "Charles"]
-	 * ["Bob", "hasSibling", "Alice"]
-	 * ["Charles", "hasSibling", "Alice"]
-	 * ["Charles", "hasSibling", "Bob"]
-	 */
-	 }
+	@Test
+	public void transitiveTest() {
+		db.setRelation_transitive("hasSibling");
+		db.newStatement(new String[] {"Alice", "hasSibling", "Bob"});
+		assertEquals(3, db.getDBKObject().size());
+		assertEquals(1, db.getDBTriple().size());
+		db.newStatement(new String[] {"Bob", "hasSibling", "Charles"});
+		assertEquals(4, db.getDBKObject().size());
+		assertEquals(3, db.getDBTriple().size());
+		/*
+		 * ["Alice", "hasSibling", "Bob"]
+		 * ["Alice", "hasSibling", "Charles"]
+		 * ["Bob", "hasSibling", "Charles"]
+		 * ["Bob", "hasSibling", "Alice"]
+		 * ["Charles", "hasSibling", "Alice"]
+		 * ["Charles", "hasSibling", "Bob"]
+		 */
+	}
 
 }

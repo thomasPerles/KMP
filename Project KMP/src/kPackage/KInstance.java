@@ -15,12 +15,13 @@ public class KInstance extends KModel {
 	
 	@Override
 	public String toString() {
-		StringBuilder res = new StringBuilder();
-		res.append('\n').append(simpleToString()).append(" is an instance");
-		if (kClass != null) {
-			res.append("\nis instance of ").append(kClass.simpleToString());
-		}
-		return res.toString();
+//		StringBuilder res = new StringBuilder();
+//		res.append('\n').append(simpleToString()).append(" is an instance");
+//		if (kClass != null) {
+//			res.append("\nis instance of ").append(kClass.simpleToString());
+//		}
+//		return res.toString();
+		return id;
 	}
 	
 	@Override

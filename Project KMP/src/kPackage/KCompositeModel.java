@@ -11,11 +11,16 @@ public class KCompositeModel extends KModel {
 		this.link = link;
 	}
 
+//	@Override
+//	public String simpleToString() {
+//		StringBuilder res = new StringBuilder();
+//		res.append(source.simpleToString()).append(' ').append(link.simpleToString()).append(' ').append(destination.simpleToString());
+//		return res.toString();
+//	}
+	
 	@Override
-	public String simpleToString() {
-		StringBuilder res = new StringBuilder();
-		res.append(source.simpleToString()).append(' ').append(link.simpleToString()).append(' ').append(destination.simpleToString());
-		return res.toString();
+	public String toString() {
+		return id;
 	}
 
 	public KModel getSource() {

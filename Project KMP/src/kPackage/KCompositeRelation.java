@@ -27,11 +27,16 @@ public class KCompositeRelation extends KRelation {
 		return model;
 	}
 	
+//	@Override
+//	public String simpleToString() {
+//		StringBuilder res = new StringBuilder();
+//		res.append(leftLink.simpleToString()).append(' ').append(model.simpleToString()).append(' ').append(rightLink.simpleToString());
+//		return res.toString();
+//	}
+	
 	@Override
-	public String simpleToString() {
-		StringBuilder res = new StringBuilder();
-		res.append(leftLink.simpleToString()).append(' ').append(model.simpleToString()).append(' ').append(rightLink.simpleToString());
-		return res.toString();
+	public String toString() {
+		return id;
 	}
 	
 	@Override

@@ -20,13 +20,18 @@ public class KRelation extends KObject {
 		this.range = range;
 	}
 	
+//	@Override
+//	public String toString() {
+//		StringBuilder res = new StringBuilder();
+//		res.append('\n').append(simpleToString()).append(" is a relation");
+//		res.append("\n domain is ").append(domain.simpleToString());
+//		res.append("\n range is ").append(range.simpleToString());
+//		return res.toString();
+//	}
+	
 	@Override
 	public String toString() {
-		StringBuilder res = new StringBuilder();
-		res.append('\n').append(simpleToString()).append(" is a relation");
-		res.append("\n domain is ").append(domain.simpleToString());
-		res.append("\n range is ").append(range.simpleToString());
-		return res.toString();
+		return id;
 	}
 	
 	@Override
@@ -142,13 +147,19 @@ public class KRelation extends KObject {
 	 */
 	public ArrayList<Triple> transitive(ArrayList<KModel> as, ArrayList<KModel> bs) {
 		ArrayList<Triple> res =  new ArrayList<Triple>();
-		for (int i = 0; i < as.size(); i++) {
-			KModel a = as.get(i), b = bs.get(i);
-			for (int j = i; j < as.size(); j++) {
-				if (a == as.get(j) && b != bs.get(j)) res.add(new Triple(b, this, bs.get(j)));
-				if (a == bs.get(j) && b != as.get(j)) res.add(new Triple(b, this, as.get(j)));
-				if (b == as.get(j) && a != bs.get(j)) res.add(new Triple(a, this, bs.get(j)));
-				if (b == bs.get(j) && a != as.get(j)) res.add(new Triple(a, this, as.get(j)));
+		KModel source = null, dest = null, source2 = null, dest2 = null;
+		if (as.size() > 1) {			
+			for (int i = 0; i < as.size()-1; i++) {
+				source = as.get(i);
+				dest = bs.get(i);
+				for (int j = i+1; j < as.size(); j++) {
+					source2 = as.get(j);
+					dest2 = bs.get(j);
+					if (source.equals(source2) && !dest.equals(dest2)) res.add(new Triple(dest, this, dest2));
+					if (source.equals(dest2) && !dest.equals(source2)) res.add(new Triple(dest, this, source2));
+					if (dest.equals(source2) && !source.equals(dest2)) res.add(new Triple(source, this, dest2));
+					if (dest.equals(dest2) && !source.equals(source2)) res.add(new Triple(source, this, source2));
+				}
 			}
 		}
 		return res;
@@ -163,11 +174,11 @@ public class KRelation extends KObject {
 	 */
 	public Triple transitive(Triple t1, Triple t2) {
 		Triple res = null;
-		KModel t1s = t1.getSource(), t1d = t1.getDestination(), t2s = t2.getSource(), t2d = t2.getDestination();
-		if (t1s == t2s && t1d != t2d) res = new Triple(t1d, this, t2d);
-		if (t1s == t2d && t1d != t2s) res = new Triple(t1d, this, t2s);
-		if (t1d == t2s && t1s != t2d) res = new Triple(t1s, this, t2d);
-		if (t1d == t2d && t1s != t2s) res = new Triple(t1s, this, t2s);
+		KModel t1source = t1.getSource(), t1dest = t1.getDestination(), t2source = t2.getSource(), t2dest = t2.getDestination();
+		if (t1source.equals(t2source) && !t1dest.equals(t2dest)) res = new Triple(t1dest, this, t2dest);
+		if (t1source.equals(t2dest) && !t1dest.equals(t2source)) res = new Triple(t1dest, this, t2source);
+		if (t1dest.equals(t2source) && !t1source.equals(t2dest)) res = new Triple(t1source, this, t2dest);
+		if (t1dest.equals(t2dest) && !t1source.equals(t2source)) res = new Triple(t1source, this, t2source);
 		return res;
 	}
 	
