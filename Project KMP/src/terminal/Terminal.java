@@ -37,8 +37,23 @@ public class Terminal implements Runnable {
 		out.println(token);
 	}
 	
+	public void println(String[] tokens) {
+		out.println();
+		for(String token : tokens) {
+			out.print(token + ' ');
+		}
+	}
+	
 	public void print(String token) {
 		out.print(token);
+	}
+	
+	public void print(int token) {
+		out.print(token);
+	}
+	
+	public void print(char cToken) {
+		out.print(cToken);
 	}
 	
 	private void quit() {

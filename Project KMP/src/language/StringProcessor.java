@@ -32,7 +32,7 @@ public class StringProcessor {
 		this.db = new DB();
 		loadGrammar();
 	}
-	
+
 	public void setDB(DB db) {
 		this.db = db;
 	}
@@ -46,9 +46,9 @@ public class StringProcessor {
 			BufferedReader br = new BufferedReader(new FileReader(new File("src/language/grammar.txt")));
 			String line = null;
 			while ((line = br.readLine()) != null) {
-				String[] splittedLine = line.split("\\|=");
+				String[] splittedLine = line.split("\\||=");
 				if (splittedLine.length > 1) {
-					String[] followers = splittedLine[1].split(" ");
+					String[] followers = splittedLine[2].split(" ");
 					patterns.add(followers);
 				}
 			}
@@ -72,14 +72,17 @@ public class StringProcessor {
 	}
 
 	/**
-	 * Offers suggestions as to what the user may want to say according to
-	 * submitted tokens.
+	 * Offers suggestions as to what the user may want to say according to submitted
+	 * tokens.
 	 * 
 	 * @param tokens
 	 *            An array of strings
 	 */
 	private void suggest(String[] tokens) {
 		for (String[] pattern : patterns) {
+			if (tokens[0].equals("help")) {
+				terminal.println(pattern);
+			}
 			for (String token : tokens) {
 				if (Arrays.asList(pattern).contains(token)) {
 					printSuggestion(pattern);
@@ -88,19 +91,8 @@ public class StringProcessor {
 		}
 	}
 
-	
-	
-	
-	
-	
-	//TODO suppress build methods ?
-	
-	
-	
-	
-	
-	
-	
+	// TODO suppress build methods ?
+
 	/**
 	 * Recursive function used in building a database triple.
 	 * 
@@ -138,8 +130,8 @@ public class StringProcessor {
 	}
 
 	/**
-	 * Constructs a database triple whose contents depend on the structure of
-	 * tokens submitted by the user.
+	 * Constructs a database triple whose contents depend on the structure of tokens
+	 * submitted by the user.
 	 * 
 	 * @param tokens
 	 *            An array of strings
@@ -263,8 +255,8 @@ public class StringProcessor {
 	}
 
 	/**
-	 * Tells the database that first and second token are two different
-	 * relations. This is the default behavior for any two relations.
+	 * Tells the database that first and second token are two different relations.
+	 * This is the default behavior for any two relations.
 	 * 
 	 * @param first
 	 *            A string representing a KRelation
@@ -277,8 +269,8 @@ public class StringProcessor {
 	}
 
 	/**
-	 * Tells the database that the first token now inherits the properties of
-	 * the second token.
+	 * Tells the database that the first token now inherits the properties of the
+	 * second token.
 	 * 
 	 * @param first
 	 *            A string representing a KRelation
@@ -304,8 +296,8 @@ public class StringProcessor {
 	}
 
 	/**
-	 * Tells the database that the first and second token are different
-	 * instances. This is the default behavior for any two instances.
+	 * Tells the database that the first and second token are different instances.
+	 * This is the default behavior for any two instances.
 	 * 
 	 * @param first
 	 *            A string representing a KInstance
@@ -318,8 +310,7 @@ public class StringProcessor {
 	}
 
 	/**
-	 * Tells the database that the first and second tokens are the same
-	 * instance.
+	 * Tells the database that the first and second tokens are the same instance.
 	 * 
 	 * @param first
 	 *            A string representing a KInstance
@@ -332,9 +323,9 @@ public class StringProcessor {
 	}
 
 	/**
-	 * Tells the database that the first and second tokens are different and do
-	 * not share any common properties or instances. This is the default
-	 * behavior for any two classes.
+	 * Tells the database that the first and second tokens are different and do not
+	 * share any common properties or instances. This is the default behavior for
+	 * any two classes.
 	 * 
 	 * @param first
 	 *            A string representing a KClass
@@ -347,8 +338,8 @@ public class StringProcessor {
 	}
 
 	/**
-	 * Tells the database to assign an inheritance relation between the first
-	 * and the second token.
+	 * Tells the database to assign an inheritance relation between the first and
+	 * the second token.
 	 * 
 	 * @param first
 	 *            A string representing a KClass
@@ -361,8 +352,8 @@ public class StringProcessor {
 	}
 
 	/**
-	 * Tells the database that the first token is an equivalent class to the
-	 * second token.
+	 * Tells the database that the first token is an equivalent class to the second
+	 * token.
 	 * 
 	 * @param first
 	 *            A string representing a KClass
@@ -388,8 +379,8 @@ public class StringProcessor {
 	}
 
 	/**
-	 * Tells the database that the first token is to be recognised as a class
-	 * whose instances include the second token.
+	 * Tells the database that the first token is to be recognised as a class whose
+	 * instances include the second token.
 	 * 
 	 * @param first
 	 *            A string representing a KModel
@@ -401,8 +392,7 @@ public class StringProcessor {
 	}
 
 	/**
-	 * Reads and displays information from database according to submitted
-	 * tokens.
+	 * Reads and displays information from database according to submitted tokens.
 	 * 
 	 * @param tokens
 	 *            The tokens from which information is displayed.
