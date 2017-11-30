@@ -48,7 +48,7 @@ public class StringProcessor {
 			while ((line = br.readLine()) != null) {
 				String[] splittedLine = line.split("\\||=");
 				if (splittedLine.length > 1) {
-					String[] followers = splittedLine[2].split(" ");
+					String[] followers = splittedLine[1].split(" ");
 					patterns.add(followers);
 				}
 			}
