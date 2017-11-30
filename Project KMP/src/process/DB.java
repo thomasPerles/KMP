@@ -352,6 +352,7 @@ public class DB implements Serializable {
 			if (ko.getId() == relation) {
 				found = true;
 				kr = (KRelation) ko;
+				kr.setSymmetric(true);
 			}
 		}
 		if (!found) {
@@ -366,6 +367,7 @@ public class DB implements Serializable {
 				if (!dbTriple.contains(tmp)) res.add(tmp);
 			}
 		}
+		addListTripleToDBTriple(res);
 		return res;
 	}
 
@@ -386,6 +388,7 @@ public class DB implements Serializable {
 			if (ko.getId() == string) {
 				found = true;
 				kr = (KRelation) ko;
+				kr.setTransitive(true);
 			}
 		}
 		if (!found) {

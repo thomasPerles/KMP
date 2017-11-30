@@ -42,7 +42,11 @@ public class TestRunner {
 	@Test
 	public void symmetricDuplicationTest() {
 		db.newStatement(new String[] { "Alice", "hasSibling", "Bob" });
+		assertEquals(3, db.getDBKObject().size());
+		assertEquals(1, db.getDBTriple().size());
 		db.setRelation_symmetric("hasSibling");
+		assertEquals(3, db.getDBKObject().size());
+		assertEquals(2, db.getDBTriple().size());
 		db.newStatement(new String[] { "Bob", "hasSibling", "John" });
 		assertEquals(4, db.getDBKObject().size());
 		assertEquals(4, db.getDBTriple().size());
