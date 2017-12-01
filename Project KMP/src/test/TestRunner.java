@@ -71,4 +71,76 @@ public class TestRunner {
 		 */
 	}
 
+	
+	
+	
+	/*
+	@Test
+	public void identicalRTest() {
+		db.newStatement(new String[] {"A", "R1", "B"});
+		db.newStatement(new String[] {"C", "R2", "D"});
+		db.setRelation_identicalR("R1", "R2");
+		assertEquals(6, db.getDBKObject().size());
+		assertEquals(4, db.getDBTriple().size());
+		db.newStatement(new String[] {"E", "R3", "F"});
+		db.setRelation_identicalR("R1", "R3");
+		assertEquals(9, db.getDBKObject().size());
+		assertEquals(9, db.getDBTriple().size());
+	}
+	
+	@Test
+	public void identicalRTestTransitive() {
+		db.newStatement(new String[] {"A", "R1", "B"});
+		db.newStatement(new String[] {"B", "R2", "C"});
+		db.setRelation_transitive("R1");
+		db.setRelation_identicalR("R1", "R2");
+		assertEquals(6, db.getDBKObject().size());
+		assertEquals(6, db.getDBTriple().size());
+	}
+	
+	@Test
+	public void identicalRTestClassInstance() {
+		db.newStatement(new String[] {"I1", "is", "C1"});
+		db.newStatement(new String[] {"I2", "is", "C2"});
+		db.newStatement(new String[] {"I1", "R1", "I2"});
+		db.newStatement(new String[] {"A", "R2", "B"});
+		db.setRelation_identicalR("R1", "R2");
+		//TODO
+		//assertTrue( A is C1, B is C2, R2.domain = C1, R2.range = C2 )
+	}
+	
+	@Test
+	public void identicalRTestInherits() {
+		db.newStatement(new String[] {"R1", "inherits", "R"});
+		db.setRelation_identicalR("R1", "R2");
+		//TODO
+		//assertTrue( R2 inherits R )
+	}
+	
+	@Test
+	public void identicalRTestDifferent() {
+		db.newStatement(new String[] {"R1", "different", "R"});
+		db.setRelation_identicalR("R1", "R2");
+		//TODO
+		//assertTrue( R2 different R )
+	}
+	
+	@Test
+	public void identicalRTestInheritsDifferent() {
+		db.newStatement(new String[] {"R1", "inherits", "R"});
+		db.setRelation_identicalR("R1", "R2");
+		db.newStatement(new String[] {"R", "different", "R3"});
+		//TODO
+		//assertTrue( R2 inherits R, R1 different R3, R2 different R3 )
+	}
+	
+	@Test
+	public void identicalRTestFutureStatement() {
+		db.setRelation_identicalR("R1", "R2");
+		db.newStatement(new String[] {"A", "R1", "B"});
+		//TODO
+		//assertTrue( A R2 B )
+	}
+	*/
+	
 }

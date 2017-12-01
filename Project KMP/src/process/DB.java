@@ -410,4 +410,9 @@ public class DB implements Serializable {
 		addListTripleToDBTriple(res);
 		return res;
 	}
+
+	public void setRelation_identicalR(String string, String string2) {
+		// TODO Auto-generated method stub
+		
+	}
 }

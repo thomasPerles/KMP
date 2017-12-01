@@ -133,6 +133,7 @@ public class KRelation extends KObject {
 		return res;
 	}
 	
+	//TODO
 	/*
 	functional
 	inverseFunctional
@@ -211,6 +212,7 @@ public class KRelation extends KObject {
 				if (!res.contains(t)) res.add(t); 
 			}
 		}
+		//TODO
 		/*
 		if (isFunctional()) res.add(functional(a, b));
 		if (isInverseFunctional()) res.add(inverseFunctional(a, b));
@@ -225,26 +227,77 @@ public class KRelation extends KObject {
 	}
 
 	
-	private ArrayList<KRelation> equivalentR = new ArrayList<KRelation>(), inheritsR = new ArrayList<KRelation>(), differentR = new ArrayList<KRelation>();
+	private ArrayList<KRelation> identicalR = new ArrayList<KRelation>(), inheritsR = new ArrayList<KRelation>(), differentR = new ArrayList<KRelation>();
 	
 	public boolean hasPropertyOnRelation() {
-		return !(equivalentR.isEmpty() && inheritsR.isEmpty() && differentR.isEmpty());
+		return !(identicalR.isEmpty() && inheritsR.isEmpty() && differentR.isEmpty());
 	}
 	
-	//TODO /!\ identical sinon equivalence => symetrique, reflexif, transitif pour les 2 relations 
-	public ArrayList<Triple> equivalentR(ArrayList<KModel> as) {
+	public ArrayList<Triple> identicalR(DB db) {
+		//results
+		ArrayList<Triple> res =  new ArrayList<Triple>(), dbTriples = new ArrayList<Triple>(), dbTriple = new ArrayList<Triple>();
+		//parameters to check
+		KClass domain = this.domain, range = this.range;
+		boolean symmetric = this.symmetric, reflexive = this.reflexive, functional = this.functional, inverseFunctional = this.inverseFunctional, transitive = this.transitive;
+		ArrayList<KRelation> identicalR = this.identicalR, inheritsR = this.inheritsR, differentR = this.differentR;
+		identicalR.add(this);
+		//the list of relations
+		ArrayList<KRelation> listRelations = identicalR;
+		//to find the parameters modified
+		for (KRelation relation : listRelations) {
+			if (relation.domain != null) domain = relation.domain;
+			if (relation.range != null) range = relation.range;
+			if (relation.symmetric) symmetric = true;
+			if (relation.reflexive) reflexive = true;
+			if (relation.functional) functional = true;
+			if (relation.inverseFunctional) inverseFunctional = true;
+			if (relation.transitive) transitive = true;
+			for (KRelation tmp : relation.identicalR) {
+				if (!identicalR.contains(tmp)) identicalR.add(tmp);
+			}
+			for (KRelation tmp : relation.inheritsR) {
+				if (!inheritsR.contains(tmp)) inheritsR.add(tmp);
+			}
+			for (KRelation tmp : relation.differentR) {
+				if (!differentR.contains(tmp)) differentR.add(tmp);
+			}
+		}
+		//to apply and to create the new inferences
+		for (KRelation relation : listRelations) {
+			dbTriple = db.findEveryTripleWith(relation);
+			if (relation.domain != domain) {
+				relation.domain = domain;
+				for (Triple triple : dbTriple) {
+					if (!triple.getSource().equals(relation.domain)) {
+						//TODO triple.getSource() is instance of KInstance
+						if (!triple.getSource().getClass().equals(relation.domain)) {
+							
+						}
+					}
+				}
+			}
+			relation.range = range;
+			relation.symmetric = symmetric;
+			relation.reflexive = reflexive;
+			relation.functional = functional;
+			relation.inverseFunctional = inverseFunctional;
+			relation.transitive = transitive;
+			relation.identicalR = identicalR;
+			relation.inheritsR = inheritsR;
+			relation.differentR = differentR;
+			dbTriples.addAll(db.findEveryTripleWith(relation));
+		}
+		//inferences
+		return res;
+	}
+	
+	public ArrayList<Triple> inheritsR(DB db) {
 		ArrayList<Triple> res =  new ArrayList<Triple>();
 		//TODO
 		return res;
 	}
 	
-	public ArrayList<Triple> inheritsR(ArrayList<KModel> as) {
-		ArrayList<Triple> res =  new ArrayList<Triple>();
-		//TODO
-		return res;
-	}
-	
-	public ArrayList<Triple> differentR(ArrayList<KModel> as) {
+	public ArrayList<Triple> differentR(DB db) {
 		ArrayList<Triple> res =  new ArrayList<Triple>();
 		//TODO
 		return res;
@@ -257,22 +310,22 @@ public class KRelation extends KObject {
 	 * @param bs
 	 * @return
 	 */
-	public ArrayList<Triple> applyPropertiesOnRelation(ArrayList<KModel> as, ArrayList<KModel> bs) {
+	public ArrayList<Triple> applyPropertiesOnRelation(DB db) {
 		ArrayList<Triple> res =  new ArrayList<Triple>(), tmp;
-		if (!equivalentR.isEmpty()) {
-			tmp = equivalentR(as);
+		if (!identicalR.isEmpty()) {
+			tmp = identicalR(db);
 			for (Triple t : tmp) {
 				if (!res.contains(t)) res.add(t); 
 			}
 		}
 		if (!inheritsR.isEmpty()) {
-			tmp = inheritsR(as);
+			tmp = inheritsR(db);
 			for (Triple t : tmp) {
 				if (!res.contains(t)) res.add(t); 
 			}
 		}
 		if (!differentR.isEmpty()) {
-			tmp = differentR(as);
+			tmp = differentR(db);
 			for (Triple t : tmp) {
 				if (!res.contains(t)) res.add(t); 
 			}
@@ -295,7 +348,7 @@ public class KRelation extends KObject {
 			ranges.add(t.getDestination());
 		}
 		res.addAll(applyProperties(domains, ranges));
-		tmp = applyPropertiesOnRelation(domains, ranges);
+		tmp = applyPropertiesOnRelation(db);
 		for (Triple t : tmp) {
 			if (!res.contains(t)) res.add(t); 
 		}
