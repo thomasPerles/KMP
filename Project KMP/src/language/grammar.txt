@@ -8,21 +8,32 @@ Declaration 		= Instantiation
 			
 Instantiation		= class has instance
 					| instance isC class
-					| class Relation class
+					| TripleInstantiation
+
+TripleInstantiation = class Relation class
 					| instance Relation instance
 
-Class				= class equivalentC class
+Class				= class identicalC class
 					| class inheritsC class
+					| class independentC class
 					| class differentC class
 
-Instance 			= instance equivalentI instance
+Instance 			= instance identicalI instance
 					| instance differentI instance
 			
-Relation			= relation equivalentR relation
+Relation			= BetweenRelations
+					| OnRelation
+					
+BetweenRelations	= relation identicalR relation
 					| relation inheritsR relation
+					| relation independentR relation
 					| relation differentR relation
-					| relation isR symmetric
+
+OnRelation			= relation isR symmetric
+					| relation isR asymmetric
+					| relation isR antisymmetric
 					| relation isR reflexive
+					| relation isR irreflexive
 					| relation isR functional
 					| relation isR inverseFunctional
 					| relation isR transitive
